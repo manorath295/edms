@@ -259,6 +259,20 @@ async fn main() -> anyhow::Result<()> {
         Err(e) => tracing::warn!("Failed to rotate old snapshots on startup: {e}"),
     }
 
+    // QP Retroactive gap fix (PID task -- QPs out of order fix)
+    // On every startup, close any QP number gaps that exist in SQLite
+    // (e.g. from deletes that happened before the per-delete reassignment
+    // was implemented). This is fast: it only runs UPDATEs on rows that
+    // are actually out of position.
+    {
+        let storage_root_str = root.to_string_lossy().to_string();
+        match db::reassign_all_qp_numbers(&core, &storage_root_str) {
+            Ok(n) if n > 0 => info!("[QP REASSIGN] Retroactively renumbered {n} QP set(s) on startup"),
+            Ok(_) => {}
+            Err(e) => tracing::warn!("[QP REASSIGN] Startup fix failed: {e:?}"),
+        }
+    }
+
     let queries = Arc::new(QueryMap::load());
     let state = state::AppState::new(
         core,

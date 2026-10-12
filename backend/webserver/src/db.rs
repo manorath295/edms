@@ -380,3 +380,110 @@ pub fn endpoints_for_ids(core: &EdmsCore, _queries: &QueryMap, ids: &[String]) -
 
     Ok(result)
 }
+
+/* ---------------- QP reassignment after deletion ---------------- */
+
+/// After deleting a QP the remaining request_numbers may have gaps (e.g. 1,3,6).
+/// Renumbers them to be sequential (1,2,3) in both request_metadata and
+/// response_metadata, and updates file_path to match the new file names.
+///
+/// Single-pass ascending approach — no UNIQUE constraint exists on this table,
+/// and processing in ascending old_n order means we always move to a smaller
+/// number that has already been freed.
+///
+/// Also cleans up any rows stuck at temp numbers (e.g. 10006) from a previous
+/// failed 2-pass attempt, by treating them as regular out-of-order numbers.
+///
+/// Called from delete_qp handler after db::delete_qp succeeds.
+pub fn reassign_qp_numbers(
+    core: &EdmsCore,
+    endpoint_id: &str,
+    storage_dir: &str,
+) -> EdmsResult<usize> {
+    // Get all remaining request_numbers for this endpoint, sorted ascending.
+    // This includes any stuck temp numbers (e.g. 10006) — they sort last and
+    // get reassigned correctly along with everything else.
+    let existing: Vec<i32> = core.cproc(
+        "SELECT DISTINCT request_number \
+         FROM request_metadata \
+         WHERE endpoint_id = ? \
+         ORDER BY request_number ASC",
+        &[&endpoint_id],
+        |row| row.get(0),
+    )?;
+
+    let mut renamed = 0usize;
+
+    // Single pass: process in ascending order of old_n.
+    // Because new_n <= old_n always (we're closing gaps, not creating them),
+    // and we go smallest-first, each target slot is already free by the time
+    // we write to it.
+    for (zero_idx, old_n) in existing.iter().enumerate() {
+        let new_n = (zero_idx as i32) + 1; // 1-based
+
+        if *old_n == new_n {
+            continue; // already in correct position
+        }
+
+        let new_req_path = format!(
+            "{}/{}-request-{}.json",
+            storage_dir, endpoint_id, new_n
+        );
+        let new_res_path = format!(
+            "{}/{}-response-{}.json",
+            storage_dir, endpoint_id, new_n
+        );
+        let req_str: &str = &new_req_path;
+        let res_str: &str = &new_res_path;
+
+        core.proc(
+            "UPDATE request_metadata \
+             SET request_number = ?, file_path = ? \
+             WHERE endpoint_id = ? AND request_number = ?",
+            &[&new_n, &req_str, &endpoint_id, old_n],
+        )?;
+
+        core.proc(
+            "UPDATE response_metadata \
+             SET request_number = ?, file_path = ? \
+             WHERE endpoint_id = ? AND request_number = ?",
+            &[&new_n, &res_str, &endpoint_id, old_n],
+        )?;
+
+        renamed += 1;
+    }
+
+    Ok(renamed)
+}
+
+/// Retroactively fix QP gaps for ALL endpoints in the database.
+/// Runs on every server startup — fast because it only touches rows
+/// that are actually out of position.
+pub fn reassign_all_qp_numbers(
+    core: &EdmsCore,
+    storage_root: &str,
+) -> EdmsResult<usize> {
+    let endpoints: Vec<String> = core.cproc(
+        "SELECT DISTINCT endpoint_id FROM request_metadata ORDER BY endpoint_id",
+        &[],
+        |row| row.get(0),
+    )?;
+
+    let mut total = 0usize;
+    for eid in &endpoints {
+        // storage_dir is where the QP JSON files live on disk
+        let storage_dir = format!("{}/storage/globalEQPData/{}", storage_root, eid);
+        match reassign_qp_numbers(core, eid, &storage_dir) {
+            Ok(n) => {
+                if n > 0 {
+                    tracing::info!("[QP REASSIGN] {eid}: {n} set(s) renumbered");
+                }
+                total += n;
+            }
+            Err(e) => {
+                tracing::warn!("[QP REASSIGN] Error for {eid}: {e:?}");
+            }
+        }
+    }
+    Ok(total)
+}

@@ -846,12 +846,41 @@ pub async fn delete_qp(
         );
     }
 
+    // QP DB Reassignment after deletion (PID task)
+    // Run SYNCHRONOUSLY (blocking) before emitting QpDeleted so the UI
+    // gets the event only AFTER the DB is already renumbered.
+    // Without this, the UI refreshes on QpDeleted and sees old numbers,
+    // forcing the user to manually refresh to see 1,2,3.
+    {
+        let st2 = state.clone();
+        let eid2 = endpoint_id.clone();
+        let storage_dir = state.endpoint_storage_dir(&endpoint_id)
+            .to_string_lossy()
+            .to_string();
+        let _ = tokio::task::spawn_blocking(move || {
+            db::reassign_qp_numbers(&st2.core, &eid2, &storage_dir)
+        })
+        .await; // await = synchronous from handler's perspective
+    }
+
     // Best-effort: the metadata rows are the source of truth this route
     // deletes by, so a file that's already missing isn't an error.
     let dir = state.endpoint_storage_dir(&endpoint_id);
     for kind in ["request", "response", "headers"] {
         let path = dir.join(format!("{endpoint_id}-{kind}-{request_number}.json"));
         let _ = tokio::fs::remove_file(path).await;
+    }
+
+    // QP Reassignment after deletion (PID task -- QPs out of order fix)
+    // After removing a QP, remaining numbers may have gaps (e.g. 1,2,5).
+    // Re-number them sequentially (1,2,3) so the UI always shows a clean list.
+    // Spawned as blocking task -- best-effort, does not block the HTTP response.
+    {
+        let eid_clone = endpoint_id.clone();
+        let dir_clone = dir.clone();
+        tokio::task::spawn_blocking(move || {
+            reassign_qp_files_inline(&dir_clone, &eid_clone);
+        });
     }
 
     state
@@ -1100,4 +1129,62 @@ pub async fn create_qp(
         .await;
 
     (StatusCode::OK, Json(json!({ "ok": true, "request_number": request_number })))
+}
+
+// =============================================================================
+// QP file reassignment helper  (PID task -- QPs out of order fix)
+//
+// Lives here (webserver) not in compute/endpoint_writer because delete_qp
+// is a webserver handler and the rename is pure filesystem work --
+// no IPC round-trip to compute needed.
+//
+// File naming convention (Ravi 2026-08-25):
+//   {eid}-request-{N}.json
+//   {eid}-response-{N}.json
+//   {eid}-headers-{N}.json
+//
+// Algorithm:
+//   1. Scan folder for {eid}-request-{N}.json -> collect N values
+//   2. Sort N ascending
+//   3. Rename each triple (request+response+headers) to sequential index
+// =============================================================================
+fn reassign_qp_files_inline(folder: &std::path::Path, eid: &str) {
+    let prefix = format!("{}-request-", eid);
+    let suffix = ".json";
+    let mut numbers: Vec<usize> = Vec::new();
+
+    let entries = match std::fs::read_dir(folder) {
+        Ok(e) => e,
+        Err(_) => return,
+    };
+
+    for entry in entries.flatten() {
+        let name = entry.file_name();
+        let name = name.to_string_lossy();
+        if name.starts_with(prefix.as_str()) && name.ends_with(suffix) {
+            let mid = &name[prefix.len()..name.len() - suffix.len()];
+            if let Ok(n) = mid.parse::<usize>() {
+                numbers.push(n);
+            }
+        }
+    }
+
+    numbers.sort_unstable();
+
+    for (zero_idx, old_n) in numbers.into_iter().enumerate() {
+        let new_n = zero_idx + 1;
+        if old_n == new_n {
+            continue;
+        }
+        for kind in ["request", "response", "headers"] {
+            let old_path = folder.join(format!("{}-{}-{}.json", eid, kind, old_n));
+            let new_path = folder.join(format!("{}-{}-{}.json", eid, kind, new_n));
+            if old_path.exists() {
+                let _ = std::fs::rename(&old_path, &new_path);
+                tracing::info!(
+                    "[QP REASSIGN] {eid}: {kind}-{old_n} -> {kind}-{new_n}"
+                );
+            }
+        }
+    }
 }

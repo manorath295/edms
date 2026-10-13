@@ -1,0 +1,15 @@
+{
+  "eid": "EID-078",
+  "count": 4,
+  "qpPairs": 3,
+  "annotation": "reports auth endpoint handling request operations",
+  "method": "POST",
+  "path": "/api/v2/summary/auth",
+  "tags": [
+    "admin",
+    "reports",
+    "products",
+    "orders"
+  ],
+  "status": "active"
+}

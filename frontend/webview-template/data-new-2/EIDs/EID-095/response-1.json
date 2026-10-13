@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-095-response1",
+  "endpoint_id": "EID-095",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/json",
+    "response_size": "5 KB",
+    "response_time": "155 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Data fetched successfully",
+    "data": {
+      "user_id": 5242,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "manager",
+      "created_at": "2025-11-15T18:26:36Z"
+    }
+  }
+}

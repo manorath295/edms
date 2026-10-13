@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-087-request2",
+  "endpoint_id": "EID-087",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "application/xml",
+    "authorization": "Basic Auth",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "check_status",
+      "priority": "medium",
+      "username": "jane_doe",
+      "email": "jane_doe@example.com"
+    }
+  }
+}

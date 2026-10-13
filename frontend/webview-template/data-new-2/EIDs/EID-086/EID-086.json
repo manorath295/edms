@@ -1,0 +1,15 @@
+{
+  "eid": "EID-086",
+  "count": 2,
+  "qpPairs": 1,
+  "annotation": "users endpoint for billing operations",
+  "method": "POST",
+  "path": "/api/v2/billing/v1",
+  "tags": [
+    "users",
+    "orders",
+    "support",
+    "notifications"
+  ],
+  "status": "deprecated"
+}

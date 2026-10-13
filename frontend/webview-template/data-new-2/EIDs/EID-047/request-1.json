@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-047-request1",
+  "endpoint_id": "EID-047",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "application/json",
+    "authorization": "Bearer Token",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "high",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

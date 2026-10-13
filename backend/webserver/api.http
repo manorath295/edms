@@ -1,0 +1,684 @@
+### EDMS Webserver API
+### For use with the VS Code "REST Client" extension (or IntelliJ's built-in HTTP client).
+### Generated from routes in src/main.rs (67 routes, verified against main.rs on 2026-09-15).
+###
+### Some routes below are WebSocket-only and cannot be driven from this file — they are
+### marked "WS ONLY" and left commented out. Use a WS client (e.g. websocat, browser
+### devtools) against ws://localhost:3000/<path> instead.
+
+@baseUrl = http://localhost:3000
+
+# ============================================================
+# Views
+# ============================================================
+
+### Home view metadata
+GET {{baseUrl}}/home
+
+### Test view metadata
+GET {{baseUrl}}/test-view
+
+### List view metadata
+GET {{baseUrl}}/list-view
+
+# ============================================================
+# Endpoints CRUD
+# ============================================================
+
+### Create an endpoint
+# "method" is optional — GET/POST/PUT/PATCH/DELETE only, 400 if invalid.
+# Omitting it leaves the endpoint unclassified in the CRUD Operations table.
+# Side effect: triggers a dashboard snapshot refresh (dashboard.db) on success.
+POST {{baseUrl}}/endpoints/create
+Content-Type: application/json
+
+{
+  "endpoint_id": "get-user-profile",
+  "endpoint_str": "https://api.example.com/users/{id}",
+  "annotation": "Fetches a user profile by id",
+  "method": "GET"
+}
+
+### Delete an endpoint
+# Side effect: same dashboard snapshot refresh as create, on success.
+POST {{baseUrl}}/endpoints/get-user-profile/delete
+
+### Set/replace an endpoint's annotation after creation
+# 404 if the endpoint doesn't exist. Side effects: dashboard snapshot
+# refresh + broadcasts EndpointAnnotationUpdated on the shared WS channel.
+POST {{baseUrl}}/endpoints/get-user-profile/annotation
+Content-Type: application/json
+
+{ "annotation": "Updated: now paginated" }
+
+### Look up an endpoint by exact (endpoint_str, method) — dedup check
+# before running a test, so a re-tested URL reuses its endpoint_id
+# instead of a new one getting allocated. 404 if none exists.
+GET {{baseUrl}}/endpoints/lookup?endpoint_str=https%3A%2F%2Fapi.example.com%2Fusers%2F%7Bid%7D&method=GET
+
+# ============================================================
+# Test View
+# ============================================================
+
+### Get a saved request for one test run (the "QP" for that run)
+GET {{baseUrl}}/test-view/get-user-profile/request/1
+
+### Get the saved response for one test run
+GET {{baseUrl}}/test-view/get-user-profile/response/1
+
+### Get the saved request/response headers for one test run
+# Body shape: {"request_headers": {...}, "response_headers": {...}}
+GET {{baseUrl}}/test-view/get-user-profile/headers/1
+
+### List every QP pair (test run) saved for an endpoint, oldest first
+# Each entry: {request_number, method, timestamp, status_code, response_time_ms}.
+# status_code/response_time_ms are null if the response hasn't landed yet.
+GET {{baseUrl}}/test-view/get-user-profile/qps
+
+### Create a QP pair by hand — no real HTTP test runs
+# Writes the request/response files directly, plus an empty headers file.
+# status_code/response_time_ms are left null since there's no real response.
+# 404 if the endpoint doesn't exist. Response: {"ok":true,"request_number"}.
+# Side effect: broadcasts QpCreated on the shared WS channel.
+POST {{baseUrl}}/test-view/get-user-profile/qps/create
+Content-Type: application/json
+
+{
+  "method": "POST",
+  "request_body": "{\n  \"example\": \"new data\"\n}",
+  "response_body": "{\n  \"status\": \"success\"\n}"
+}
+
+### Update an existing QP pair's request/response bodies
+# Overwrites the two saved files in place. status_code/response_time_ms and
+# the headers file are left untouched. 404 if no such pair exists.
+# Side effect: broadcasts QpUpdated on the shared WS channel.
+POST {{baseUrl}}/test-view/get-user-profile/qps/1/update
+Content-Type: application/json
+
+{
+  "request_body": "{\n  \"example\": \"data\"\n}",
+  "response_body": "{\n  \"status\": \"success\"\n}"
+}
+
+### Delete one QP pair
+# Removes its request_metadata/response_metadata rows and the three saved
+# JSON files (request/response/headers). 404 if no such pair exists.
+# Side effect: broadcasts QpDeleted on the shared WS channel (same one
+# /test-view/run uses) so open List/Test Views know to re-fetch the list above.
+POST {{baseUrl}}/test-view/get-user-profile/qps/1/delete
+
+### Stop the current test run
+POST {{baseUrl}}/test-view/stop
+
+### Save a test run to history
+POST {{baseUrl}}/test-view/save/history
+Content-Type: application/json
+
+{
+  "endpoint_id": "get-user-profile",
+  "action": "test",
+  "details": "manual run from api.http"
+}
+
+### Save a bookmark
+# "collection" is required as of 2026-09-22 — no more implicit "loaded"
+# collection to fall back to. Side effect: dashboard snapshot refresh.
+POST {{baseUrl}}/test-view/save/bookmark
+Content-Type: application/json
+
+{
+  "collection": "auth-suite",
+  "endpoint_id": "get-user-profile",
+  "notes": "known-good response, keep for regression checks"
+}
+
+### Clear all history
+POST {{baseUrl}}/test-view/history/clearall
+
+### Clear one collection's bookmarks (not every collection's)
+# Side effect: triggers a dashboard snapshot refresh.
+POST {{baseUrl}}/test-view/auth-suite/bookmark/clearall
+
+### WS ONLY — subscribe to live endpoint list: GET /test-view/endpoints/load
+### WS ONLY — subscribe to one collection's live bookmark list:
+### GET /test-view/{collection}/bookmarks/load
+### Each entry includes "updated" (when it was bookmarked) and
+### "in_collection" (has it also been saved as a real member, vs. just
+### bookmarked). Multiple tabs on the same collection all see the same
+### live updates; different collections never interfere (2026-09-22).
+### WS ONLY — run a test (send {"type":"...","payload":{"endpoint_id","method","body","timeout_ms","tick_interval_ms"}}): GET /test-view/run
+### WS ONLY — bookmark into a named collection (also triggers a dashboard
+### snapshot refresh): GET /test-view/{collection}/add
+### WS ONLY — remove a bookmark entirely, not just membership (also
+### triggers a dashboard snapshot refresh): GET /test-view/{collection}/delete
+
+# ============================================================
+# Tags
+# ============================================================
+# add/remove (not list or popular) trigger a live dashboard snapshot refresh,
+# same as endpoint create/delete.
+
+### Add a tag to an endpoint
+POST {{baseUrl}}/tags/get-user-profile/add
+Content-Type: application/json
+
+{ "tag": "critical" }
+
+### Remove a tag from an endpoint
+POST {{baseUrl}}/tags/get-user-profile/remove
+Content-Type: application/json
+
+{ "tag": "critical" }
+
+### List tags for an endpoint
+GET {{baseUrl}}/tags/get-user-profile
+
+### Most-used tags across all endpoints
+GET {{baseUrl}}/tags/popular
+
+# ============================================================
+# Bookmarks ↔ Collections — multiple collections at once (2026-09-22)
+# ============================================================
+# Redesigned so a collection is always explicit in the request instead of
+# an implicit shared "active" one — two tabs can now have two different
+# collections open with no interference, and two tabs on the same
+# collection both see the same live updates. See API_REFERENCE.md for
+# the full rationale and the cascades that come with it (collection
+# rename/delete, endpoint delete all correctly clean up bookmarks now).
+
+### WS ONLY — snapshot of a collection's bookmark count, then streams
+### events. Pure read — no wipe, no copy, no backup: GET /bookmarks/{collection}/load
+
+### Save a bookmarked endpoint into real collection membership
+# 400 if it isn't currently bookmarked in this collection. Broadcasts
+# CollectionMembershipUpdated — previously this emitted nothing at all.
+POST {{baseUrl}}/bookmarks/auth-suite/get-user-profile/save
+
+### Remove an endpoint's membership from a collection — stays bookmarked
+POST {{baseUrl}}/bookmarks/auth-suite/get-user-profile/unsave
+
+# ============================================================
+# Collections / Webview / Repoview
+# ============================================================
+# Catalog (which collections/webviews/repoviews exist) + a per-view
+# tagname+count table — a simple incrementally-maintained counter, not a
+# full tag entity with membership tracking. Per Ravi's schema, 2026-08-25.
+#
+# create/delete/rename on the tags routes all trigger a dashboard snapshot
+# refresh AND broadcast a ViewTagsUpdated event on the app's single shared
+# WS channel (same channel /test-view/run uses) — connect there to know
+# when to re-fetch the matching */tags/list route below, per the WS-vs-REST
+# rule: WS only triggers a refresh, REST delivers the actual data.
+#
+# WS event shape:
+#   {"type":"event","event":{"type":"ViewTagsUpdated","payload":{"view":"collections"}}}
+#   "view" is one of "collections" | "webview" | "repoview".
+#
+# Not built yet: bookmarks/eqptags (same pattern is planned for it), the
+# "merge" operation, and the per-collection independent SQLite file
+# (file_path on the catalog entry stays null until that exists).
+
+### Register a new collection in the catalog
+# "annotation" is optional.
+POST {{baseUrl}}/collections/create
+Content-Type: application/json
+
+{ "name": "auth-suite", "annotation": "Auth regression suite" }
+
+### List registered collections
+# Each entry includes "annotation" (null if unset) and "endpoint_count"
+# (null if the collection has no file yet).
+GET {{baseUrl}}/collections/list
+
+### Get one collection's catalog entry
+GET {{baseUrl}}/collections/auth-suite
+
+### Set/replace a collection's annotation
+POST {{baseUrl}}/collections/auth-suite/annotation
+Content-Type: application/json
+
+{ "annotation": "Auth regression suite — updated" }
+
+### Rename a collection — moves its file on disk to match, too
+POST {{baseUrl}}/collections/auth-suite/rename
+Content-Type: application/json
+
+{ "new_name": "auth-suite-v2" }
+
+### Delete a collection's catalog entry
+POST {{baseUrl}}/collections/auth-suite-v2/delete
+
+### List endpoints that belong to a collection
+GET {{baseUrl}}/collections/auth-suite/endpoints
+
+### Add to Collection — find every endpoint carrying any of these tags,
+# add them as members, and optionally copy their current tags in too.
+# Central tags table is read-only here, never modified.
+POST {{baseUrl}}/collections/auth-suite/tags/import
+Content-Type: application/json
+
+{ "tags": ["smoke", "critical"], "export_existing_tags": true }
+
+### List (endpoint_id, tag) pairs this collection carries from the import above
+GET {{baseUrl}}/collections/auth-suite/tags/endpoints
+
+### Remove an endpoint from a collection
+POST {{baseUrl}}/collections/auth-suite/endpoints/remove
+Content-Type: application/json
+
+{ "endpoint_id": "get-user-profile" }
+
+### Add a membership tag to a collection (distinct from the catalog-wide
+### collections/tags/* counters above — these are per-collection C(T) rows)
+POST {{baseUrl}}/collections/auth-suite/membership-tags/add
+Content-Type: application/json
+
+{ "tag": "smoke" }
+
+### Remove a membership tag from a collection
+POST {{baseUrl}}/collections/auth-suite/membership-tags/remove
+Content-Type: application/json
+
+{ "tag": "smoke" }
+
+### List a collection's membership tags
+GET {{baseUrl}}/collections/auth-suite/membership-tags
+
+### List all collections that carry a given membership tag
+GET {{baseUrl}}/collections/by-tag/smoke
+
+### Create a collections tag, or add to its count if it already exists
+# "endpoint_ids" length becomes the count increment (defaults to 1 if omitted/empty).
+POST {{baseUrl}}/collections/tags/create
+Content-Type: application/json
+
+{ "name": "auth", "endpoint_ids": ["E1", "E2"] }
+
+### Delete one or more collections tags in one call
+POST {{baseUrl}}/collections/tags/delete
+Content-Type: application/json
+
+{ "names": ["auth"] }
+
+### Rename a collections tag — its count carries over to the new name
+POST {{baseUrl}}/collections/tags/rename
+Content-Type: application/json
+
+{ "old_name": "auth", "new_name": "authn" }
+
+### List collections tags with their counts
+GET {{baseUrl}}/collections/tags/list
+
+### --- WebView: the same list model as RepoView (v1.0), under /webview ---
+# Every /repoview/... route below has a /webview/... twin with the same body
+# and behaviour (create, list, :name, rename, annotation, delete, duplicate,
+# convert-to-collection, combine, takeout, import, membership-tags, by-tag).
+# A WebView has no tables routes; it has a front page instead.
+
+### Create a WebView from a Collection (source_collection is required now)
+POST {{baseUrl}}/webview/create
+Content-Type: application/json
+
+{ "name": "wtest", "source_collection": "content-api" }
+
+### List WebViews
+GET {{baseUrl}}/webview/list
+
+### Modify Frontpage: load (a new WebView starts with {})
+GET {{baseUrl}}/webview/wtest/front-page
+
+### Modify Frontpage: save (the editor's JSON document, any valid JSON except null; replaces the previous one; up to 10 MB)
+POST {{baseUrl}}/webview/wtest/front-page
+Content-Type: application/json
+
+{
+  "front_page": {
+    "type": "doc",
+    "content": [
+      { "type": "heading", "attrs": { "level": 1 }, "content": [{ "type": "text", "text": "About the WebView" }] },
+      { "type": "paragraph", "content": [{ "type": "text", "text": "WebView description" }] }
+    ]
+  }
+}
+
+### Combine two WebViews
+POST {{baseUrl}}/webview/combine
+Content-Type: application/json
+
+{ "name": "wall", "sources": ["wtest", "wtest2"] }
+
+### Takeout (front-page.json goes with it) and import it back
+POST {{baseUrl}}/webview/wtest/takeout
+Content-Type: application/json
+
+{}
+
+### Import reads storage/imports/uncompressed/webview/{folder}/
+POST {{baseUrl}}/webview/import
+Content-Type: application/json
+
+{ "folder": "wtest", "name": "wtest-imported" }
+
+### Create a webview tag, or add to its count if it already exists
+POST {{baseUrl}}/webview/tags/create
+Content-Type: application/json
+
+{ "name": "auth", "endpoint_ids": ["E1"] }
+
+### Delete one or more webview tags in one call
+POST {{baseUrl}}/webview/tags/delete
+Content-Type: application/json
+
+{ "names": ["auth"] }
+
+### Rename a webview tag
+POST {{baseUrl}}/webview/tags/rename
+Content-Type: application/json
+
+{ "old_name": "auth", "new_name": "authn" }
+
+### List webview tags with their counts
+GET {{baseUrl}}/webview/tags/list
+
+### --- Repoview (v1.0): a LIST - a SQLite index + Tables-*.md, no EQP data ---
+# The EQP data is only copied at Import/Export time. There are no routes to
+# browse, add or remove a RepoView's endpoints - see API_REFERENCE.md.
+
+### Create a repoview from a collection - builds the list (members, tags, a
+# snapshot of each endpoint + its QPs, and the size of its EQP data). Instant:
+# nothing is copied. Omit endpoint_ids for every member.
+POST {{baseUrl}}/repoview/create
+Content-Type: application/json
+
+{ "name": "rtest", "annotation": "optional", "source_collection": "product-catalog" }
+
+### List every repoview with ALL the columns the UI table reads, in one call:
+# name, tags, dataTags, crud, segments, segmentCount, eidCount, qpCount,
+# indexLists, dateCreated, dataSizeBytes, ...
+GET {{baseUrl}}/repoview/list
+
+### One repoview (snake_case): eid_count, qp_count, data_size_bytes,
+# tags_in_data, crud_types, segments, segment_count, index_lists, source, tags
+GET {{baseUrl}}/repoview/rtest
+
+### Rename a repoview - moves the whole folder
+POST {{baseUrl}}/repoview/rtest/rename
+Content-Type: application/json
+
+{ "new_name": "rtest-renamed" }
+
+### Annotate a repoview
+POST {{baseUrl}}/repoview/rtest-renamed/annotation
+Content-Type: application/json
+
+{ "annotation": "updated" }
+
+### Duplicate a repoview - clones the folder, annotation, source and tags
+POST {{baseUrl}}/repoview/rtest-renamed/duplicate
+Content-Type: application/json
+
+{ "new_name": "rtest-renamed-copy" }
+
+### Delete a repoview - removes the catalog row and the whole folder
+POST {{baseUrl}}/repoview/rtest-renamed-copy/delete
+
+### Multi-select delete - each name independently, one bad name doesn't block
+# the rest. Always 200; check each entry's own "ok" in results.
+POST {{baseUrl}}/repoview/delete
+Content-Type: application/json
+
+{ "names": ["rtest", "rtest-2"] }
+
+### --- Convert to Collection (the RMB pop-up) ---
+# New name: the Collection is created. Name already exists: 409 with
+# {"conflict": true, "options": ["merge", "rename"]} and nothing changes -
+# then retry with the user's choice below. Only endpoints that still exist
+# centrally (same URL + method) are added; the rest are listed in "skipped".
+
+### New (or existing - this is the one that gets the 409 warning)
+POST {{baseUrl}}/repoview/rtest-renamed/convert-to-collection
+Content-Type: application/json
+
+{ "collection": "my-collection" }
+
+### The user chose "merge" into the existing Collection
+POST {{baseUrl}}/repoview/rtest-renamed/convert-to-collection
+Content-Type: application/json
+
+{ "collection": "my-collection", "on_exists": "merge" }
+
+### The user chose "rename" - creates a new Collection with this name
+POST {{baseUrl}}/repoview/rtest-renamed/convert-to-collection
+Content-Type: application/json
+
+{ "collection": "my-collection", "on_exists": "rename", "new_name": "my-collection-2" }
+
+### --- Import / Export (takeout) ---
+# A RepoView is only a list, so this is the one place its EQP data is
+# touched. Takeout copies the data of every listed endpoint into
+# storage/takeout/{dest_name}/ with the SQLite index stripped (git/web
+# friendly), plus Tables-*.md and repoview-manifest.json (the endpoints'
+# URL/method/tags/QP status codes, which an EQP folder doesn't hold).
+#
+# Takeout and import are JOBS: they return 202 {job_id} at once and
+# edms-child does the copying. Watch GET /jobs/:id, or the WebSocket
+# GET /jobs/ws (ViewIoProgress while it runs, ViewIoDone when it finishes).
+
+### Take a RepoView out -> 202 {job_id}. 409 {conflict, options:["overwrite","rename"]}
+# straight away if a takeout of that name already exists.
+POST {{baseUrl}}/repoview/rtest-renamed/takeout
+Content-Type: application/json
+
+{}
+
+### Overwrite the existing takeout, or give it another name
+POST {{baseUrl}}/repoview/rtest-renamed/takeout
+Content-Type: application/json
+
+{ "dest_name": "rtest-for-git", "overwrite": true }
+
+### Ask how a job is doing: status running | done | failed | stalled, progress, result
+# (put the job_id from the 202 here)
+GET {{baseUrl}}/jobs/job-0000000000000-1
+
+### Recent jobs
+GET {{baseUrl}}/jobs
+
+### Import: put the takeout folder (e.g. from git) in
+# storage/imports/uncompressed/repo/ and name it here. Every endpoint gets a
+# FRESH EID (the same URL may already exist under another one), its EQP files
+# are renamed to match, and the RepoView's index and Tables are rebuilt.
+# 409 {conflict, options:["rename"]} if the RepoView name is taken - retry
+# with "name". The result (mapping, skipped, ...) is in the job.
+POST {{baseUrl}}/repoview/import
+Content-Type: application/json
+
+{ "folder": "rtest-for-git" }
+
+### Import under a different RepoView name
+POST {{baseUrl}}/repoview/import
+Content-Type: application/json
+
+{ "folder": "rtest-for-git", "name": "rtest-imported" }
+
+### Import a zipped takeout from storage/imports/compressed/repo/
+# It is unzipped first (strictly: any unsafe entry refuses the whole zip) into
+# uncompressed/repo/rtest-for-git/. 409 {options:["replace"]} if that folder is
+# already there - send "replace_extracted": true to replace it.
+POST {{baseUrl}}/repoview/import
+Content-Type: application/json
+
+{ "zip": "rtest-for-git.zip", "name": "rtest-from-zip" }
+
+### The Import/Export table: what is in storage/imports/ (scanned live)
+GET {{baseUrl}}/import-export/table
+
+### Format-check a row (a job): use the row's "section" and "path"
+POST {{baseUrl}}/import-export/check
+Content-Type: application/json
+
+{ "section": "compressed", "path": "repo/rtest-for-git.zip" }
+
+### --- Tags on the RepoView itself (the list-level tag ops) ---
+# Separate from dataTags, the tags of the endpoints inside it.
+
+### Add a tag to a repoview
+POST {{baseUrl}}/repoview/rtest-renamed/membership-tags/add
+Content-Type: application/json
+
+{ "tag": "production" }
+
+### Remove a tag from a repoview
+POST {{baseUrl}}/repoview/rtest-renamed/membership-tags/remove
+Content-Type: application/json
+
+{ "tag": "production" }
+
+### List a repoview's own tags
+GET {{baseUrl}}/repoview/rtest-renamed/membership-tags
+
+### Find every repoview carrying a given tag
+GET {{baseUrl}}/repoview/by-tag/production
+
+### --- Index Table generation ---
+# Two approaches, one active at a time (both write the same Tables-NNN.md /
+# Tables-meta.md names, so generating one replaces the other). Read from the
+# RepoView's own index. Not run automatically - call it to (re)generate.
+# NOTE: a JSON body is always required, even if just {}.
+
+### Approach [B] Endpoint Segments (the default), default batch size (100)
+POST {{baseUrl}}/repoview/rtest-renamed/tables/generate
+Content-Type: application/json
+
+{}
+
+### Approach [B] with an explicit batch size
+POST {{baseUrl}}/repoview/rtest-renamed/tables/generate
+Content-Type: application/json
+
+{ "approach": "endpoint_segments", "batch_size": 50 }
+
+### Approach [A] Sorted Tags - tag -> segment-count pivot, untagged last
+POST {{baseUrl}}/repoview/rtest-renamed/tables/generate
+Content-Type: application/json
+
+{ "approach": "sorted_tags", "batch_size": 50 }
+
+### Which generated files exist, and which approach produced them
+GET {{baseUrl}}/repoview/rtest-renamed/tables
+
+### The markdown of the master/navigation file, then of one batch (what the
+# UI's "Endpoint Data table" click loads). Only Tables-meta.md and
+# Tables-<number>.md are ever served.
+GET {{baseUrl}}/repoview/rtest-renamed/tables/Tables-meta.md
+
+###
+GET {{baseUrl}}/repoview/rtest-renamed/tables/Tables-001.md
+
+### --- Same four "tags" routes as webview above, scoped to repoview ---
+# (central tag-count rollup, separate from the membership routes above)
+
+### Create a repoview tag, or add to its count if it already exists
+POST {{baseUrl}}/repoview/tags/create
+Content-Type: application/json
+
+{ "name": "auth", "endpoint_ids": ["E1"] }
+
+### Delete one or more repoview tags in one call
+POST {{baseUrl}}/repoview/tags/delete
+Content-Type: application/json
+
+{ "names": ["auth"] }
+
+### Rename a repoview tag
+POST {{baseUrl}}/repoview/tags/rename
+Content-Type: application/json
+
+{ "old_name": "auth", "new_name": "authn" }
+
+### List repoview tags with their counts
+GET {{baseUrl}}/repoview/tags/list
+
+# ============================================================
+# Data View
+# ============================================================
+
+### Delete a data folder
+POST {{baseUrl}}/dataview/my-folder/delete
+
+### Merge a data folder (fire-and-forget — returns 202 immediately,
+### result arrives later via POST /internal/callback -> ExportReady event)
+POST {{baseUrl}}/dataview/my-folder/merge
+
+### WS ONLY — mark a folder active (syncs to disk, broadcasts FolderBecameActive): GET /dataview/{folder}/active
+
+### Live active-folder dashboard counts (endpoints / bookmarks / history)
+# NOTE: this is NOT the dashboard_snapshots table from dashboard_db.rs —
+# it's a separate, older live-count endpoint scoped to the active folder.
+# See the "Dashboard Snapshot" section below for the snapshot data.
+GET {{baseUrl}}/dataview/dashboard
+
+# ============================================================
+# Dashboard Snapshot
+# ============================================================
+
+### Latest dashboard snapshot (endpoint/bookmark/tag counts, DB size,
+### storage size, file count) — taken on startup, and refreshed live after
+### any endpoint create/delete, tag add/remove, or bookmark/collection
+### action (see side-effect notes on those routes above).
+GET {{baseUrl}}/dashboard/snapshot
+
+### Full snapshot history, oldest first (rolling 30-day retention window)
+GET {{baseUrl}}/dashboard/snapshot/history
+
+### Static data — hardcoded config loaded from config.yaml at startup:
+### application limits, stability/commit info, external links.
+GET {{baseUrl}}/dashboard/static
+
+### Day-over-day comparison between two arbitrary dates (not necessarily
+### adjacent — e.g. day 1 vs day 6). Dates are "YYYY-MM-DD". 404 if either
+### date has no daily snapshot — response distinguishes "outside the 30-day
+### retention window" from "no data yet" (today/future/app was down that day).
+### Daily snapshots are captured automatically once per calendar-date
+### rollover (a background watcher, not a request you trigger).
+GET {{baseUrl}}/dashboard/compare?from=2026-08-01&to=2026-08-07
+
+### CRUD Operations breakdown (endpoint segments/tags/bookmarks/history/QP
+### pairs, grouped by HTTP method with count + % of that row's total).
+### Ravi's [1] approach: global processing via a compute child process,
+### triggered by app launch + this refresh route — never per-transaction.
+### 404 until the first refresh (startup or manual) completes.
+GET {{baseUrl}}/dashboard/crud-operations
+
+### Trigger a CRUD Operations recompute — this is what the dashboard's
+### Refresh button hits. Fire-and-forget: 202 immediately, result lands a
+### moment later via POST /internal/callback.
+POST {{baseUrl}}/dashboard/crud-operations/refresh
+
+# ============================================================
+# Logs
+# ============================================================
+
+### Plain-text tail of the app log (last 500 lines, oldest first)
+GET {{baseUrl}}/logs
+
+# ============================================================
+# Repo Export
+# ============================================================
+
+### Export a bookmark collection
+# Returns markdown immediately; also fires async zip export + markdown
+# generation jobs in the background (results via /internal/callback).
+GET {{baseUrl}}/repo/my-collection/export.zip/export
+
+### Import a previously exported zip back into a collection
+# Fire-and-forget: 202 immediately, looks for the zip under
+# edms_root/exports/{filename}, result via /internal/callback.
+POST {{baseUrl}}/repo/my-collection/export.zip/import
+
+# ============================================================
+# Internal (do not call from the UI — edms-child callback channel only)
+# ============================================================
+
+# POST {{baseUrl}}/internal/callback

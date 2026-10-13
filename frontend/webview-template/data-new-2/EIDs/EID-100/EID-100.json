@@ -1,0 +1,15 @@
+{
+  "eid": "EID-100",
+  "count": 4,
+  "qpPairs": 3,
+  "annotation": "inventory endpoint for reports operations",
+  "method": "DELETE",
+  "path": "/api/v2/reports/notifications/users",
+  "tags": [
+    "inventory",
+    "auth",
+    "products",
+    "orders"
+  ],
+  "status": "active"
+}

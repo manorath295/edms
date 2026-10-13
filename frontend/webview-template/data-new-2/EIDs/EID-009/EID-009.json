@@ -1,0 +1,14 @@
+{
+  "eid": "EID-009",
+  "count": 1,
+  "qpPairs": 1,
+  "annotation": "system API endpoint used for login",
+  "method": "DELETE",
+  "path": "/api/admin/login/users",
+  "tags": [
+    "auth",
+    "system",
+    "orders"
+  ],
+  "status": "active"
+}

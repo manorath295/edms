@@ -1,0 +1,13 @@
+{
+  "eid": "EID-052",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "reports admin endpoint handling request operations",
+  "method": "POST",
+  "path": "/api/v2/create/admin/inventory/system",
+  "tags": [
+    "reports",
+    "admin"
+  ],
+  "status": "deprecated"
+}

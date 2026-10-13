@@ -1,0 +1,12 @@
+{
+  "eid": "EID-082",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "summary support endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/v2/summary/details",
+  "tags": [
+    "support"
+  ],
+  "status": "active"
+}

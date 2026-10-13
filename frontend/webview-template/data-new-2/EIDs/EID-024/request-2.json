@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-024-request2",
+  "endpoint_id": "EID-024",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "delete_record",
+      "priority": "medium",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

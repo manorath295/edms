@@ -1,0 +1,14 @@
+{
+  "eid": "EID-094",
+  "count": 1,
+  "qpPairs": 2,
+  "annotation": "billing API endpoint used for auth",
+  "method": "GET",
+  "path": "/api/auth/delete",
+  "tags": [
+    "billing",
+    "notifications",
+    "products"
+  ],
+  "status": "active"
+}

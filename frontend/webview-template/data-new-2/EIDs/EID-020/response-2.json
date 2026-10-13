@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-020-response2",
+  "endpoint_id": "EID-020",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "application/json",
+    "response_size": "6 KB",
+    "response_time": "328 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 903,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "manager",
+      "created_at": "2026-10-21T01:00:34Z"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-007-response1",
+  "endpoint_id": "EID-007",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/xml",
+    "response_size": "4 KB",
+    "response_time": "563 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Report generated successfully",
+    "data": {
+      "user_id": 3237,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "user",
+      "created_at": "2025-09-17T07:13:10Z"
+    }
+  }
+}

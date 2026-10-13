@@ -1,0 +1,13 @@
+{
+  "eid": "EID-041",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "auth details endpoint handling request operations",
+  "method": "PUT",
+  "path": "/api/v2/details/auth/support",
+  "tags": [
+    "auth",
+    "users"
+  ],
+  "status": "deprecated"
+}

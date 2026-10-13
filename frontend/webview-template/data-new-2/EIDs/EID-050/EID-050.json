@@ -1,0 +1,15 @@
+{
+  "eid": "EID-050",
+  "count": 3,
+  "qpPairs": 1,
+  "annotation": "notifications endpoint for details operations",
+  "method": "PUT",
+  "path": "/api/status/details",
+  "tags": [
+    "inventory",
+    "admin",
+    "support",
+    "notifications"
+  ],
+  "status": "inactive"
+}

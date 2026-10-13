@@ -1,0 +1,15 @@
+{
+  "eid": "EID-002",
+  "count": 1,
+  "qpPairs": 2,
+  "annotation": "users endpoint for reports operations",
+  "method": "DELETE",
+  "path": "/api/reports/login",
+  "tags": [
+    "products",
+    "reports",
+    "users",
+    "orders"
+  ],
+  "status": "active"
+}

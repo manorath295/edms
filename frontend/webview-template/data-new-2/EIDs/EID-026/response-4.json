@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-026-response4",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "text/plain",
+    "response_size": "7 KB",
+    "response_time": "552 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 5695,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "manager",
+      "created_at": "2026-08-17T14:13:43Z"
+    }
+  }
+}

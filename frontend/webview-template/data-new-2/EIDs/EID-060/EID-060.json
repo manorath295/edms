@@ -1,0 +1,13 @@
+{
+  "eid": "EID-060",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "auth endpoint for create operations",
+  "method": "PATCH",
+  "path": "/api/v2/reports/history/create",
+  "tags": [
+    "auth",
+    "products"
+  ],
+  "status": "active"
+}

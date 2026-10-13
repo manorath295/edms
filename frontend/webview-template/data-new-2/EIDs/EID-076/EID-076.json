@@ -1,0 +1,14 @@
+{
+  "eid": "EID-076",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "orders endpoint for details operations",
+  "method": "PUT",
+  "path": "/api/v2/details/list/admin/products",
+  "tags": [
+    "products",
+    "orders",
+    "analytics"
+  ],
+  "status": "inactive"
+}

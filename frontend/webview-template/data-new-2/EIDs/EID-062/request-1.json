@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-062-request1",
+  "endpoint_id": "EID-062",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "2 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "medium",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

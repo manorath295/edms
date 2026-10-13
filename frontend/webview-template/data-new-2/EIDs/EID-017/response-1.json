@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-017-response1",
+  "endpoint_id": "EID-017",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "application/xml",
+    "response_size": "15 KB",
+    "response_time": "676 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 6894,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "manager",
+      "created_at": "2025-05-02T08:02:41Z"
+    }
+  }
+}

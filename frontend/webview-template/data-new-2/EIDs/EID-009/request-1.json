@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-009-request1",
+  "endpoint_id": "EID-009",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "fetch_orders",
+      "priority": "high",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

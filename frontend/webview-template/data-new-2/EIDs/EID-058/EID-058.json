@@ -1,0 +1,15 @@
+{
+  "eid": "EID-058",
+  "count": 3,
+  "qpPairs": 5,
+  "annotation": "inventory endpoint for orders operations",
+  "method": "PUT",
+  "path": "/api/support/orders/analytics",
+  "tags": [
+    "system",
+    "inventory",
+    "notifications",
+    "billing"
+  ],
+  "status": "inactive"
+}

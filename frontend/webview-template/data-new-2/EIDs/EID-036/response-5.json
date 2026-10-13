@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-036-response5",
+  "endpoint_id": "EID-036",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/xml",
+    "response_size": "4 KB",
+    "response_time": "806 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Data fetched successfully",
+    "data": {
+      "user_id": 6613,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "manager",
+      "created_at": "2026-07-06T22:02:41Z"
+    }
+  }
+}

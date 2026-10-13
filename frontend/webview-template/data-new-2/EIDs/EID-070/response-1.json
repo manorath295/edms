@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-070-response1",
+  "endpoint_id": "EID-070",
+  "meta_data": {
+    "status_code": 404,
+    "content_type": "application/xml",
+    "response_size": "6 KB",
+    "response_time": "474 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 404,
+    "message": "Resource not found",
+    "data": {
+      "user_id": 9214,
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com",
+      "role": "manager",
+      "created_at": "2025-03-18T16:32:32Z"
+    }
+  }
+}

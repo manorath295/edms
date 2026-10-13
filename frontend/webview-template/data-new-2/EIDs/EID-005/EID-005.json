@@ -1,0 +1,12 @@
+{
+  "eid": "EID-005",
+  "count": 3,
+  "qpPairs": 1,
+  "annotation": "admin inventory endpoint request processing",
+  "method": "PUT",
+  "path": "/api/products/auth/admin",
+  "tags": [
+    "inventory"
+  ],
+  "status": "deprecated"
+}

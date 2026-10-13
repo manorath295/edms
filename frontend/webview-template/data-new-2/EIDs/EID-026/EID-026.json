@@ -1,0 +1,15 @@
+{
+  "eid": "EID-026",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "admin API endpoint used for notifications",
+  "method": "POST",
+  "path": "/api/v1/notifications/status",
+  "tags": [
+    "auth",
+    "admin",
+    "inventory",
+    "users"
+  ],
+  "status": "deprecated"
+}

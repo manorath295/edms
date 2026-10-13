@@ -1,0 +1,14 @@
+{
+  "eid": "EID-063",
+  "count": 4,
+  "qpPairs": 1,
+  "annotation": "stats products endpoint request processing",
+  "method": "POST",
+  "path": "/api/v2/reports/products/stats",
+  "tags": [
+    "users",
+    "products",
+    "admin"
+  ],
+  "status": "active"
+}

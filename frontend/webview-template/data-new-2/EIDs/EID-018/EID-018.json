@@ -1,0 +1,15 @@
+{
+  "eid": "EID-018",
+  "count": 4,
+  "qpPairs": 1,
+  "annotation": "auth reports endpoint handling request operations",
+  "method": "GET",
+  "path": "/api/v1/users/reports",
+  "tags": [
+    "reports",
+    "inventory",
+    "admin",
+    "auth"
+  ],
+  "status": "inactive"
+}

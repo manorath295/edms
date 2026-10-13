@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-014-request3",
+  "endpoint_id": "EID-014",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "fetch_orders",
+      "priority": "high",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

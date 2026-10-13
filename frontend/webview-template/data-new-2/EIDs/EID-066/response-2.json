@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-066-response2",
+  "endpoint_id": "EID-066",
+  "meta_data": {
+    "status_code": 400,
+    "content_type": "application/json",
+    "response_size": "8 KB",
+    "response_time": "866 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 400,
+    "message": "Invalid request",
+    "data": {
+      "user_id": 4257,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "support",
+      "created_at": "2026-09-24T23:18:43Z"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-010-response2",
+  "endpoint_id": "EID-010",
+  "meta_data": {
+    "status_code": 202,
+    "content_type": "application/json",
+    "response_size": "9 KB",
+    "response_time": "615 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 202,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 8561,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "admin",
+      "created_at": "2025-01-06T18:42:20Z"
+    }
+  }
+}

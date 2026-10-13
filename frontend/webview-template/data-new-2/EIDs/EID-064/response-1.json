@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-064-response1",
+  "endpoint_id": "EID-064",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "application/json",
+    "response_size": "6 KB",
+    "response_time": "228 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 7488,
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com",
+      "role": "user",
+      "created_at": "2025-09-21T18:35:40Z"
+    }
+  }
+}

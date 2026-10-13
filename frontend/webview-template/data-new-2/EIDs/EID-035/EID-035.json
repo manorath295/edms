@@ -1,0 +1,13 @@
+{
+  "eid": "EID-035",
+  "count": 2,
+  "qpPairs": 3,
+  "annotation": "create reports endpoint request processing",
+  "method": "POST",
+  "path": "/api/reports/create/logout/stats",
+  "tags": [
+    "reports",
+    "notifications"
+  ],
+  "status": "inactive"
+}

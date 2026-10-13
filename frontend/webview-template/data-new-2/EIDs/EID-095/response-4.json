@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-095-response4",
+  "endpoint_id": "EID-095",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "application/xml",
+    "response_size": "9 KB",
+    "response_time": "476 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 6220,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "support",
+      "created_at": "2025-07-17T22:31:53Z"
+    }
+  }
+}

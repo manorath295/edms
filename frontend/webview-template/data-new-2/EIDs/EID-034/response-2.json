@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-034-response2",
+  "endpoint_id": "EID-034",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/json",
+    "response_size": "1 KB",
+    "response_time": "122 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Data fetched successfully",
+    "data": {
+      "user_id": 1693,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "admin",
+      "created_at": "2025-11-17T01:05:08Z"
+    }
+  }
+}

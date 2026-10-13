@@ -1,0 +1,14 @@
+{
+  "eid": "EID-013",
+  "count": 3,
+  "qpPairs": 5,
+  "annotation": "details system endpoint request processing",
+  "method": "POST",
+  "path": "/api/v2/stats/details/notifications",
+  "tags": [
+    "billing",
+    "notifications",
+    "system"
+  ],
+  "status": "inactive"
+}

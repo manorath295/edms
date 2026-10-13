@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-031-request1",
+  "endpoint_id": "EID-031",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "5 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "low",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

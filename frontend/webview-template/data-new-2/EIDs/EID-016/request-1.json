@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-016-request1",
+  "endpoint_id": "EID-016",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "application/json",
+    "authorization": "Basic Auth",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "get_product",
+      "priority": "medium",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

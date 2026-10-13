@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-048-response1",
+  "endpoint_id": "EID-048",
+  "meta_data": {
+    "status_code": 400,
+    "content_type": "text/plain",
+    "response_size": "8 KB",
+    "response_time": "834 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 400,
+    "message": "Invalid request",
+    "data": {
+      "user_id": 6987,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "support",
+      "created_at": "2026-11-26T22:28:11Z"
+    }
+  }
+}

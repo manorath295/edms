@@ -1,0 +1,15 @@
+{
+  "eid": "EID-017",
+  "count": 1,
+  "qpPairs": 3,
+  "annotation": "update orders endpoint request processing",
+  "method": "POST",
+  "path": "/api/v1/history/list/update/logout",
+  "tags": [
+    "auth",
+    "orders",
+    "reports",
+    "inventory"
+  ],
+  "status": "active"
+}

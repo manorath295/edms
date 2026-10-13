@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-064-request4",
+  "endpoint_id": "EID-064",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "application/xml",
+    "authorization": "Basic Auth",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "fetch_orders",
+      "priority": "medium",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

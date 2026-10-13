@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-036-response2",
+  "endpoint_id": "EID-036",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "text/plain",
+    "response_size": "5 KB",
+    "response_time": "580 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Report generated successfully",
+    "data": {
+      "user_id": 621,
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com",
+      "role": "user",
+      "created_at": "2025-08-08T22:46:40Z"
+    }
+  }
+}

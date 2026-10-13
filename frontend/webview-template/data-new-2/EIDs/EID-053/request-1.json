@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-053-request1",
+  "endpoint_id": "EID-053",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "7 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "get_product",
+      "priority": "low",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

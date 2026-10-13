@@ -1,0 +1,15 @@
+{
+  "eid": "EID-074",
+  "count": 4,
+  "qpPairs": 4,
+  "annotation": "history products endpoint request processing",
+  "method": "GET",
+  "path": "/api/v1/auth/analytics/history",
+  "tags": [
+    "admin",
+    "notifications",
+    "products",
+    "orders"
+  ],
+  "status": "active"
+}

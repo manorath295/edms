@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-006-response3",
+  "endpoint_id": "EID-006",
+  "meta_data": {
+    "status_code": 400,
+    "content_type": "text/plain",
+    "response_size": "11 KB",
+    "response_time": "158 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 400,
+    "message": "Invalid request",
+    "data": {
+      "user_id": 4525,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "support",
+      "created_at": "2025-07-01T01:39:39Z"
+    }
+  }
+}

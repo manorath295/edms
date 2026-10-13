@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-001-request2",
+  "endpoint_id": "EID-001",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "application/json",
+    "authorization": "Bearer Token",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "check_status",
+      "priority": "high",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

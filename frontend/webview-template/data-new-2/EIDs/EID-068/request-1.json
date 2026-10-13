@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-068-request1",
+  "endpoint_id": "EID-068",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "medium",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

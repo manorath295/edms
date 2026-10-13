@@ -1,0 +1,14 @@
+{
+  "eid": "EID-097",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "update reports endpoint request processing",
+  "method": "POST",
+  "path": "/api/status/update",
+  "tags": [
+    "system",
+    "analytics",
+    "reports"
+  ],
+  "status": "inactive"
+}

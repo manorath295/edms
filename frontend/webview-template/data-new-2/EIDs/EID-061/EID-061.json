@@ -1,0 +1,13 @@
+{
+  "eid": "EID-061",
+  "count": 3,
+  "qpPairs": 2,
+  "annotation": "orders endpoint for delete operations",
+  "method": "DELETE",
+  "path": "/api/delete/history",
+  "tags": [
+    "orders",
+    "users"
+  ],
+  "status": "inactive"
+}

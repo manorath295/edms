@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-027-response1",
+  "endpoint_id": "EID-027",
+  "meta_data": {
+    "status_code": 500,
+    "content_type": "application/xml",
+    "response_size": "2 KB",
+    "response_time": "888 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 500,
+    "message": "Internal server error",
+    "data": {
+      "user_id": 1787,
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com",
+      "role": "support",
+      "created_at": "2025-12-11T20:26:13Z"
+    }
+  }
+}

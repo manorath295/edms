@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>HASHEDTOKEN - dashboard</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style></style>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+			integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+	</head>
+	<body class="bg-[#f5f5f7] text-[#1d1d1f] font-sans antialiased">
+		<main class="h-screen w-full max-w-screen mx-auto overflow-hidden">
+			<div class="navbar py-0 flex-shrink-0 border-b-2 border-black/40">
+				<nav class="w-full z-50 py-2 transition-all duration-300">
+					<div class="w-full px-2 flex items-center justify-between">
+						<div class="flex items-center gap-3">
+							<div class="w-10 h-10">
+								<img
+									src="assets/ht-logo.png"
+									alt="HashedTokens Logo"
+									class="w-full h-full object-contain"
+								/>
+							</div>
+							<h1 class="text-2xl font-bold text-[#2d5016] whitespace-nowrap">
+								HashedTokens
+							</h1>
+						</div>
+
+						<div class="flex items-center gap-4 justify-around">
+							<a
+								href="/dashboard.html"
+								class="px-5 py-2 font-semibold transition-all duration-300 text-black border-b-2 border-black hover:border-black/40"
+							>
+								Home
+							</a>
+							<a
+								href="/about-collection.html"
+								class="px-5 py-2 font-semibold transition-all duration-300 text-black/80 border-b-2 border-transparent hover:border-black/40"
+							>
+								About collection
+							</a>
+							<a
+								href="/webview.html"
+								class="px-5 py-2 font-semibold transition-all duration-300 text-black/80 border-b-2 border-transparent hover:border-black/40"
+							>
+								Cards
+							</a>
+							
+							<a
+								href="/listview.html"
+								class="px-5 py-2 font-semibold transition-all duration-300 text-black/80 border-b-2 border-transparent hover:border-black/40"
+							>
+								List
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="w-full mx-2 px-7 py-8 flex justify-between">
+				<div>
+					<h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-[#1d1d1f] capitalize">
+						Analytic Dashboard
+					</h1>
+					<p class="max-w-2xl text-[17px] leading-relaxed text-[#707070] mt-4 font-light">
+						Explore endpoint coverage, request methods, and EQP activity from one
+						focused overview. Use the cards view to inspect individual endpoint data
+						in detail.
+					</p>
+					<a
+						href="/webview.html"
+						class="inline-flex items-center gap-3 mt-6 rounded-full bg-[#2d5016] px-6 py-3.5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-[#213b10] hover:scale-[1.02]"
+					>
+						<i
+							class="fa-solid fa-layer-group text-base"
+							aria-hidden="true"
+						></i>
+						<span>Web View for EQP Data</span>
+						<i
+							class="fa-solid fa-arrow-right text-xs"
+							aria-hidden="true"
+						></i>
+					</a>
+				</div>
+			</div>
+			<section class="w-full px-8 pb-10 flex gap-6 h-[calc(100vh-280px)]">
+				<div class="left w-[55%] rounded-2xl bg-white border border-gray-200 h-full p-8 flex flex-col overflow-hidden">
+					<div class="flex-1 overflow-auto">
+						<table class="w-full border-collapse">
+							<thead>
+								<tr class="th1 text-[#707070] text-sm">
+									<th colspan="4"></th>
+								<th
+									colspan="2"
+									class="py-3 px-4"
+								>
+									GET
+								</th>
+								<th
+									colspan="2"
+									class="py-3 px-4"
+								>
+									POST
+								</th>
+								<th
+									colspan="2"
+									class="py-3 px-4"
+								>
+									DELETE
+								</th>
+								<th
+									colspan="2"
+									class="py-3 px-4 font-medium"
+								>
+									PUT
+								</th>
+							</tr>
+							<tr class="th2 border-t border-gray-200 text-[#1d1d1f] text-sm">
+								<th
+									class="py-3 px-4 font-medium text-left"
+									colspan="2"
+								>
+									Entity
+								</th>
+								<th
+									class="py-3 px-4 text-center font-semibold"
+									colspan="2"
+								>
+									Total
+								</th>
+								<th class="py-3 px-4 text-center font-medium border-l border-gray-100 text-[#707070]">
+									%
+								</th>
+								<th class="py-3 px-4 text-center font-medium">Count</th>
+								<th class="py-3 px-4 text-center font-medium border-l border-gray-100 text-[#707070]">
+									%
+								</th>
+								<th class="py-3 px-4 text-center font-medium">Count</th>
+								<th class="py-3 px-4 text-center font-medium border-l border-gray-100 text-[#707070]">
+									%
+								</th>
+								<th class="py-3 px-4 text-center font-medium">Count</th>
+								<th class="py-3 px-4 text-center font-medium border-l border-gray-100 text-[#707070]">
+									%
+								</th>
+								<th class="py-3 px-4 text-center font-medium">Count</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- <tr class="hover:bg-surface-container-low/50 transition-colors border-t border-black/40">
+								<td class="py-3 px-4 font-bold text-on-surface" colspan="2">Endpoints</td>
+								<td
+									class="py-3 px-4 font-mono font-bold text-right text-primary"
+                                    colspan="2"
+								>
+									1,248
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right border-l border-outline-variant/10"
+								>
+									54
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right"
+								>
+									673
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right border-l border-outline-variant/10"
+								>
+									18
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right"
+								>
+									224
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right border-l border-outline-variant/10"
+								>
+									6
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right"
+								>
+									74
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right border-l border-outline-variant/10"
+								>
+									22
+								</td>
+								<td
+									class="py-3 px-4 font-mono text-on-surface-variant text-right"
+								>
+									277
+								</td>
+							</tr> -->
+						</tbody>
+					</table>
+					</div>
+
+					<p class="text-sm text-center text-[#707070] mt-6 font-light">
+						Click on a table row to view details in the chart
+					</p>
+				</div>
+				<div class="right w-[45%] h-full flex flex-col justify-center items-center bg-white rounded-2xl border border-gray-200 p-6">
+					<canvas
+						id="myChart"
+						width="100"
+						height="150"
+					></canvas>
+				</div>
+			</section>
+		</main>
+		<script type="module" src="new-Scripts/dashboard.js"></script>
+	</body>
+</html>

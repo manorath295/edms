@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-076-request1",
+  "endpoint_id": "EID-076",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "4 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "high",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

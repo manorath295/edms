@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-041-response3",
+  "endpoint_id": "EID-041",
+  "meta_data": {
+    "status_code": 500,
+    "content_type": "application/xml",
+    "response_size": "5 KB",
+    "response_time": "584 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 500,
+    "message": "Internal server error",
+    "data": {
+      "user_id": 378,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "admin",
+      "created_at": "2026-09-19T19:59:08Z"
+    }
+  }
+}

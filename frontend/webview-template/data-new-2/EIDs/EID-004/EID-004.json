@@ -1,0 +1,12 @@
+{
+  "eid": "EID-004",
+  "count": 3,
+  "qpPairs": 4,
+  "annotation": "users endpoint for orders operations",
+  "method": "DELETE",
+  "path": "/api/orders/v1",
+  "tags": [
+    "users"
+  ],
+  "status": "active"
+}

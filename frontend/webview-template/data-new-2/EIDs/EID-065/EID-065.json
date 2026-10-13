@@ -1,0 +1,15 @@
+{
+  "eid": "EID-065",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "inventory API endpoint used for details",
+  "method": "PATCH",
+  "path": "/api/v1/details/inventory",
+  "tags": [
+    "admin",
+    "system",
+    "support",
+    "inventory"
+  ],
+  "status": "inactive"
+}

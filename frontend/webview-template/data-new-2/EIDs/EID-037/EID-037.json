@@ -1,0 +1,13 @@
+{
+  "eid": "EID-037",
+  "count": 2,
+  "qpPairs": 5,
+  "annotation": "details inventory endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/orders/v1/reports/details",
+  "tags": [
+    "inventory",
+    "notifications"
+  ],
+  "status": "inactive"
+}

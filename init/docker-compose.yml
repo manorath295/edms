@@ -1,0 +1,69 @@
+services:
+  webserver:
+    build:
+      context: ../backend
+      dockerfile: webserver/Dockerfile
+    # Branded image/container name per Ravi (2026-09-14). The service key
+    # ("webserver") stays as-is on purpose — that's what Docker's internal
+    # DNS resolves, and nginx.conf / seed.mjs both reference it by that
+    # name; container_name is just an alias on top, doesn't change that.
+    image: hashedtokens-edms-backend:v1.0
+    container_name: hashedtokens-edms-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../backend/webserver/data:/app/data
+      - webserver-data:/app/edms_data
+      # Where EDMS stores all its data on YOUR machine — plain YAML, no
+      # .env file (Ravi, 2026-09-15). Defaults to a folder next to this
+      # repo (../../edms-data), auto-created by Docker on first run — no
+      # manual mkdir needed — and directly visible on your PC, not hidden
+      # in a Docker volume. Want it somewhere else? Just edit the
+      # left-hand side below; whatever you set it to gets auto-created
+      # the same way.
+      - ../../edms-data:/app/edms_root
+    environment:
+      - RUST_LOG=info
+      - EDMS_DB_PATH=/app/data/edms.db
+      - EDMS_ROOT=/app/edms_root
+    networks:
+      - hashedtokens-edms
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: hashedtokens-edms-frontend:v1.0
+    container_name: hashedtokens-edms-frontend
+    ports:
+      - "3911:80"  # per the folder-schema doc — open localhost:3911 for the UI
+    depends_on:
+      - webserver
+    networks:
+      - hashedtokens-edms
+
+  # First-boot demo data. Runs once on `docker compose up`, then exits
+  # (you'll see it as "Exited (0)" in `docker compose ps` — that's
+  # expected). It's idempotent: if the backend already has endpoints it
+  # does nothing. Talks only to the API, so it never touches the DB or
+  # storage layout directly.
+  seed:
+    image: node:22-alpine
+    depends_on:
+      - webserver
+    environment:
+      - EDMS_BASE=http://webserver:3000
+    volumes:
+      - ./seed.mjs:/seed.mjs:ro
+    command: node /seed.mjs
+    restart: "no"
+    networks:
+      - hashedtokens-edms
+
+networks:
+  hashedtokens-edms:
+    name: hashedtokens-edms
+    driver: bridge
+
+volumes:
+  webserver-data:

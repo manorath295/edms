@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-098-response3",
+  "endpoint_id": "EID-098",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/xml",
+    "response_size": "2 KB",
+    "response_time": "599 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 8120,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "support",
+      "created_at": "2026-12-09T21:47:19Z"
+    }
+  }
+}

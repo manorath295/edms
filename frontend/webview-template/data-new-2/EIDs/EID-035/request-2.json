@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-035-request2",
+  "endpoint_id": "EID-035",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "medium",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

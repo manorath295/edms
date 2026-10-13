@@ -1,0 +1,14 @@
+{
+  "eid": "EID-099",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "support endpoint for create operations",
+  "method": "PUT",
+  "path": "/api/v1/profile/billing/create/system",
+  "tags": [
+    "support",
+    "users",
+    "system"
+  ],
+  "status": "active"
+}

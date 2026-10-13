@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-065-request3",
+  "endpoint_id": "EID-065",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "low",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

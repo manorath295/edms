@@ -1,0 +1,14 @@
+{
+  "eid": "EID-033",
+  "count": 3,
+  "qpPairs": 1,
+  "annotation": "products endpoint for admin operations",
+  "method": "PATCH",
+  "path": "/api/v2/stats/admin/system/list",
+  "tags": [
+    "orders",
+    "notifications",
+    "products"
+  ],
+  "status": "active"
+}

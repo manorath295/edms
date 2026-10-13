@@ -1,0 +1,14 @@
+{
+  "eid": "EID-071",
+  "count": 2,
+  "qpPairs": 3,
+  "annotation": "users create endpoint handling request operations",
+  "method": "PATCH",
+  "path": "/api/v1/users/notifications/create",
+  "tags": [
+    "auth",
+    "users",
+    "support"
+  ],
+  "status": "active"
+}

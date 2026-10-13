@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-097-response3",
+  "endpoint_id": "EID-097",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "text/plain",
+    "response_size": "4 KB",
+    "response_time": "331 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 6303,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "support",
+      "created_at": "2025-01-04T19:27:01Z"
+    }
+  }
+}

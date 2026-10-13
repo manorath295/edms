@@ -1,0 +1,14 @@
+{
+  "eid": "EID-044",
+  "count": 4,
+  "qpPairs": 1,
+  "annotation": "analytics API endpoint used for delete",
+  "method": "PATCH",
+  "path": "/api/products/delete",
+  "tags": [
+    "analytics",
+    "inventory",
+    "auth"
+  ],
+  "status": "deprecated"
+}

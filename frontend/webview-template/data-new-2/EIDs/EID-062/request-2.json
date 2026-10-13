@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-062-request2",
+  "endpoint_id": "EID-062",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "application/json",
+    "authorization": "API Key",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "high",
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com"
+    }
+  }
+}

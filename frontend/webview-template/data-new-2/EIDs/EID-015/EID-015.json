@@ -1,0 +1,12 @@
+{
+  "eid": "EID-015",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "admin notifications endpoint request processing",
+  "method": "GET",
+  "path": "/api/history/admin/create",
+  "tags": [
+    "notifications"
+  ],
+  "status": "deprecated"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-035-response3",
+  "endpoint_id": "EID-035",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "text/plain",
+    "response_size": "13 KB",
+    "response_time": "634 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 3794,
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com",
+      "role": "user",
+      "created_at": "2026-09-22T02:19:21Z"
+    }
+  }
+}

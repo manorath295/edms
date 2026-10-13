@@ -1,0 +1,14 @@
+{
+  "eid": "EID-091",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "billing endpoint for profile operations",
+  "method": "PUT",
+  "path": "/api/v1/list/reports/profile/create",
+  "tags": [
+    "billing",
+    "inventory",
+    "reports"
+  ],
+  "status": "deprecated"
+}

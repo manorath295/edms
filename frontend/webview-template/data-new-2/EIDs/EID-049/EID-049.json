@@ -1,0 +1,13 @@
+{
+  "eid": "EID-049",
+  "count": 3,
+  "qpPairs": 4,
+  "annotation": "history auth endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/v2/products/history/status/notifications",
+  "tags": [
+    "orders",
+    "auth"
+  ],
+  "status": "deprecated"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-068-response2",
+  "endpoint_id": "EID-068",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "application/xml",
+    "response_size": "9 KB",
+    "response_time": "199 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 1101,
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com",
+      "role": "user",
+      "created_at": "2025-08-19T07:58:21Z"
+    }
+  }
+}

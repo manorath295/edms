@@ -1,0 +1,12 @@
+{
+  "eid": "EID-042",
+  "count": 3,
+  "qpPairs": 4,
+  "annotation": "analytics products endpoint request processing",
+  "method": "PATCH",
+  "path": "/api/v2/analytics/create/logout",
+  "tags": [
+    "products"
+  ],
+  "status": "deprecated"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-011-response3",
+  "endpoint_id": "EID-011",
+  "meta_data": {
+    "status_code": 500,
+    "content_type": "application/json",
+    "response_size": "10 KB",
+    "response_time": "327 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 500,
+    "message": "Internal server error",
+    "data": {
+      "user_id": 9209,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "user",
+      "created_at": "2026-11-22T20:46:44Z"
+    }
+  }
+}

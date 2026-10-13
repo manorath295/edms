@@ -1,0 +1,15 @@
+{
+  "eid": "EID-095",
+  "count": 1,
+  "qpPairs": 4,
+  "annotation": "billing endpoint for history operations",
+  "method": "POST",
+  "path": "/api/stats/inventory/history/products",
+  "tags": [
+    "admin",
+    "reports",
+    "billing",
+    "products"
+  ],
+  "status": "inactive"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-088-response3",
+  "endpoint_id": "EID-088",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/xml",
+    "response_size": "11 KB",
+    "response_time": "547 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 3839,
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com",
+      "role": "admin",
+      "created_at": "2026-10-15T13:52:23Z"
+    }
+  }
+}

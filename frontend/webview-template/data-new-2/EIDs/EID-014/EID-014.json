@@ -1,0 +1,15 @@
+{
+  "eid": "EID-014",
+  "count": 2,
+  "qpPairs": 5,
+  "annotation": "billing API endpoint used for details",
+  "method": "PATCH",
+  "path": "/api/details/system",
+  "tags": [
+    "reports",
+    "billing",
+    "notifications",
+    "system"
+  ],
+  "status": "active"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-066-response4",
+  "endpoint_id": "EID-066",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/json",
+    "response_size": "4 KB",
+    "response_time": "560 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Request completed successfully",
+    "data": {
+      "user_id": 7028,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "support",
+      "created_at": "2025-06-15T02:27:25Z"
+    }
+  }
+}

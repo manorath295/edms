@@ -1,0 +1,13 @@
+{
+  "eid": "EID-053",
+  "count": 2,
+  "qpPairs": 1,
+  "annotation": "billing auth endpoint request processing",
+  "method": "PUT",
+  "path": "/api/v2/billing/logout/summary/reports",
+  "tags": [
+    "auth",
+    "analytics"
+  ],
+  "status": "inactive"
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-037-response2",
+  "endpoint_id": "EID-037",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/json",
+    "response_size": "8 KB",
+    "response_time": "662 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Resource updated successfully",
+    "data": {
+      "user_id": 1838,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "user",
+      "created_at": "2025-02-17T08:01:52Z"
+    }
+  }
+}

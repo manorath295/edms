@@ -1,0 +1,12 @@
+{
+  "eid": "EID-025",
+  "count": 3,
+  "qpPairs": 4,
+  "annotation": "login reports endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/v1/stats/create/login",
+  "tags": [
+    "reports"
+  ],
+  "status": "active"
+}

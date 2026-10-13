@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-099-request1",
+  "endpoint_id": "EID-099",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "low",
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com"
+    }
+  }
+}

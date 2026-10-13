@@ -1,0 +1,14 @@
+{
+  "eid": "EID-067",
+  "count": 4,
+  "qpPairs": 1,
+  "annotation": "logout orders endpoint request processing",
+  "method": "GET",
+  "path": "/api/v2/users/logout/login",
+  "tags": [
+    "billing",
+    "orders",
+    "system"
+  ],
+  "status": "active"
+}

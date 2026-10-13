@@ -1,0 +1,15 @@
+{
+  "eid": "EID-048",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "products endpoint for products operations",
+  "method": "POST",
+  "path": "/api/v2/orders/auth/products/list",
+  "tags": [
+    "support",
+    "products",
+    "auth",
+    "billing"
+  ],
+  "status": "active"
+}

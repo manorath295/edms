@@ -1,0 +1,12 @@
+{
+  "eid": "EID-079",
+  "count": 1,
+  "qpPairs": 4,
+  "annotation": "products endpoint for users operations",
+  "method": "GET",
+  "path": "/api/v1/users/create/auth/login",
+  "tags": [
+    "products"
+  ],
+  "status": "deprecated"
+}

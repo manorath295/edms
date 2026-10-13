@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-026-response1",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "status_code": 202,
+    "content_type": "text/plain",
+    "response_size": "14 KB",
+    "response_time": "563 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 202,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 9341,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "admin",
+      "created_at": "2026-12-06T13:38:19Z"
+    }
+  }
+}

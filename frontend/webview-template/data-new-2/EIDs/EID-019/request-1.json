@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-019-request1",
+  "endpoint_id": "EID-019",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "application/xml",
+    "authorization": "Bearer Token",
+    "request_size": "5 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "low",
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com"
+    }
+  }
+}

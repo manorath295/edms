@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-058-response3",
+  "endpoint_id": "EID-058",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "text/plain",
+    "response_size": "11 KB",
+    "response_time": "643 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 3215,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "admin",
+      "created_at": "2025-08-19T02:08:22Z"
+    }
+  }
+}

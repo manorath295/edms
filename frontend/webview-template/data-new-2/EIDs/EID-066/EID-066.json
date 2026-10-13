@@ -1,0 +1,12 @@
+{
+  "eid": "EID-066",
+  "count": 1,
+  "qpPairs": 5,
+  "annotation": "profile billing endpoint request processing",
+  "method": "POST",
+  "path": "/api/v1/auth/profile",
+  "tags": [
+    "billing"
+  ],
+  "status": "active"
+}

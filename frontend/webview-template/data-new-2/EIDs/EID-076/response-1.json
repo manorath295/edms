@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-076-response1",
+  "endpoint_id": "EID-076",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "text/plain",
+    "response_size": "9 KB",
+    "response_time": "349 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 5837,
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com",
+      "role": "user",
+      "created_at": "2026-09-16T17:29:18Z"
+    }
+  }
+}

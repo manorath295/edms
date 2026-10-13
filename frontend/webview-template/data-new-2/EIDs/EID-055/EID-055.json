@@ -1,0 +1,12 @@
+{
+  "eid": "EID-055",
+  "count": 3,
+  "qpPairs": 1,
+  "annotation": "update orders endpoint request processing",
+  "method": "POST",
+  "path": "/api/update/details/v1",
+  "tags": [
+    "orders"
+  ],
+  "status": "inactive"
+}

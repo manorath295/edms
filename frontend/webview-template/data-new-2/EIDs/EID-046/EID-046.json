@@ -1,0 +1,14 @@
+{
+  "eid": "EID-046",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "history reports endpoint request processing",
+  "method": "PUT",
+  "path": "/api/users/v2/history",
+  "tags": [
+    "system",
+    "analytics",
+    "reports"
+  ],
+  "status": "inactive"
+}

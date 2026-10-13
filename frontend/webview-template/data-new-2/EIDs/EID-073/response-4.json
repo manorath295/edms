@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-073-response4",
+  "endpoint_id": "EID-073",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/json",
+    "response_size": "11 KB",
+    "response_time": "894 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Resource updated successfully",
+    "data": {
+      "user_id": 8144,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "support",
+      "created_at": "2026-04-02T23:48:37Z"
+    }
+  }
+}

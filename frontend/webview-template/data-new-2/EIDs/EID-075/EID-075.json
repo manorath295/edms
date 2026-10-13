@@ -1,0 +1,12 @@
+{
+  "eid": "EID-075",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "products admin endpoint handling request operations",
+  "method": "PATCH",
+  "path": "/api/auth/admin",
+  "tags": [
+    "products"
+  ],
+  "status": "inactive"
+}

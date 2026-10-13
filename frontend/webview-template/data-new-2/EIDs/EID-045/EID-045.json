@@ -1,0 +1,12 @@
+{
+  "eid": "EID-045",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "orders users endpoint request processing",
+  "method": "PUT",
+  "path": "/api/admin/users/v2/orders",
+  "tags": [
+    "users"
+  ],
+  "status": "inactive"
+}

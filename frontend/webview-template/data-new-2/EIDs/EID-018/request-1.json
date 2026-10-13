@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-018-request1",
+  "endpoint_id": "EID-018",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "medium",
+      "username": "jane_doe",
+      "email": "jane_doe@example.com"
+    }
+  }
+}

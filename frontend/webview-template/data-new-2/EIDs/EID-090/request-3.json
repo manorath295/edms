@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-090-request3",
+  "endpoint_id": "EID-090",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "application/xml",
+    "authorization": "Basic Auth",
+    "request_size": "10 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "fetch_orders",
+      "priority": "high",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-072-response2",
+  "endpoint_id": "EID-072",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "application/xml",
+    "response_size": "4 KB",
+    "response_time": "173 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 9355,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "admin",
+      "created_at": "2025-03-10T12:43:41Z"
+    }
+  }
+}

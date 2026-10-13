@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-027-request1",
+  "endpoint_id": "EID-027",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "application/xml",
+    "authorization": "API Key",
+    "request_size": "4 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "low",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

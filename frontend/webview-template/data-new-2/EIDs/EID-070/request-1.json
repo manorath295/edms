@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-070-request1",
+  "endpoint_id": "EID-070",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "application/xml",
+    "authorization": "API Key",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "high",
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com"
+    }
+  }
+}

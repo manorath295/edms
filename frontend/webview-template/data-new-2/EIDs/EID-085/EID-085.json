@@ -1,0 +1,14 @@
+{
+  "eid": "EID-085",
+  "count": 1,
+  "qpPairs": 1,
+  "annotation": "orders orders endpoint request processing",
+  "method": "GET",
+  "path": "/api/v1/orders/support",
+  "tags": [
+    "notifications",
+    "orders",
+    "products"
+  ],
+  "status": "inactive"
+}

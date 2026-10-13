@@ -1,0 +1,15 @@
+{
+  "eid": "EID-024",
+  "count": 1,
+  "qpPairs": 2,
+  "annotation": "reports endpoint for update operations",
+  "method": "PUT",
+  "path": "/api/v2/system/auth/update/notifications",
+  "tags": [
+    "billing",
+    "admin",
+    "reports",
+    "analytics"
+  ],
+  "status": "inactive"
+}

@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-072-request3",
+  "endpoint_id": "EID-072",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "application/json",
+    "authorization": "Basic Auth",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "check_status",
+      "priority": "high",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-020-request4",
+  "endpoint_id": "EID-020",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "application/json",
+    "authorization": "API Key",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "high",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

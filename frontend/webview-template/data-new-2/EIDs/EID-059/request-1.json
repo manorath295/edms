@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-059-request1",
+  "endpoint_id": "EID-059",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "application/json",
+    "authorization": "API Key",
+    "request_size": "4 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "low",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

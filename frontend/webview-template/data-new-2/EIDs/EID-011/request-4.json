@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-011-request4",
+  "endpoint_id": "EID-011",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "application/xml",
+    "authorization": "Bearer Token",
+    "request_size": "6 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "get_product",
+      "priority": "high",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

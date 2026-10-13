@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-039-request3",
+  "endpoint_id": "EID-039",
+  "meta_data": {
+    "method": "PUT",
+    "content_type": "application/xml",
+    "authorization": "Bearer Token",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "low",
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com"
+    }
+  }
+}

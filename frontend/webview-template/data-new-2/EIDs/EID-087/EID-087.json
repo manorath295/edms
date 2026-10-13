@@ -1,0 +1,12 @@
+{
+  "eid": "EID-087",
+  "count": 1,
+  "qpPairs": 3,
+  "annotation": "products API endpoint used for stats",
+  "method": "PUT",
+  "path": "/api/stats/v2/system",
+  "tags": [
+    "products"
+  ],
+  "status": "inactive"
+}

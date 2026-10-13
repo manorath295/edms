@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-061-response1",
+  "endpoint_id": "EID-061",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/xml",
+    "response_size": "11 KB",
+    "response_time": "567 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Data fetched successfully",
+    "data": {
+      "user_id": 2777,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "support",
+      "created_at": "2025-02-25T10:15:39Z"
+    }
+  }
+}

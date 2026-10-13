@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-079-response1",
+  "endpoint_id": "EID-079",
+  "meta_data": {
+    "status_code": 400,
+    "content_type": "application/json",
+    "response_size": "5 KB",
+    "response_time": "713 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 400,
+    "message": "Invalid request",
+    "data": {
+      "user_id": 1813,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "admin",
+      "created_at": "2026-12-09T04:26:13Z"
+    }
+  }
+}

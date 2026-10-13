@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-082-response3",
+  "endpoint_id": "EID-082",
+  "meta_data": {
+    "status_code": 400,
+    "content_type": "application/xml",
+    "response_size": "14 KB",
+    "response_time": "291 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 400,
+    "message": "Invalid request",
+    "data": {
+      "user_id": 232,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "user",
+      "created_at": "2025-09-24T15:05:10Z"
+    }
+  }
+}

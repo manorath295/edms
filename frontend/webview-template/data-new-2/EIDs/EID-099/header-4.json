@@ -1,0 +1,12 @@
+{
+  "endpoint_id": "EID-099",
+  "request_id": "EID-099-request4",
+  "response_id": "EID-099-response4",
+  "request_headers": {
+    "Authorization": "Bearer sample_token",
+    "Content-Type": "text/plain"
+  },
+  "response_headers": {
+    "Content-Type": "text/plain"
+  }
+}

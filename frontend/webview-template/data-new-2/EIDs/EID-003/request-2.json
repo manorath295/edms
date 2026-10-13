@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-003-request2",
+  "endpoint_id": "EID-003",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "application/xml",
+    "authorization": "Basic Auth",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "medium",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

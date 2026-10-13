@@ -1,0 +1,13 @@
+{
+  "eid": "EID-098",
+  "count": 1,
+  "qpPairs": 4,
+  "annotation": "admin API endpoint used for users",
+  "method": "POST",
+  "path": "/api/v2/inventory/users/profile/admin",
+  "tags": [
+    "admin",
+    "support"
+  ],
+  "status": "active"
+}

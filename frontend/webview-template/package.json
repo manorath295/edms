@@ -1,0 +1,17 @@
+{
+  "name": "frontend-webview",
+  "version": "1.0.0",
+  "description": "This repository serves a static EDMS UI through Nginx.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "typescript": "^7.0.2"
+  }
+}

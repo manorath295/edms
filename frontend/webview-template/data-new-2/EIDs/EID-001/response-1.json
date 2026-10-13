@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-001-response1",
+  "endpoint_id": "EID-001",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "text/plain",
+    "response_size": "10 KB",
+    "response_time": "788 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Request completed successfully",
+    "data": {
+      "user_id": 8911,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "user",
+      "created_at": "2025-07-25T15:32:02Z"
+    }
+  }
+}

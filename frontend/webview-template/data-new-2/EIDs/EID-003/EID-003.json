@@ -1,0 +1,13 @@
+{
+  "eid": "EID-003",
+  "count": 2,
+  "qpPairs": 3,
+  "annotation": "support API endpoint used for orders",
+  "method": "PATCH",
+  "path": "/api/v2/update/orders",
+  "tags": [
+    "support",
+    "admin"
+  ],
+  "status": "active"
+}

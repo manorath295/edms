@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-021-response4",
+  "endpoint_id": "EID-021",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "application/json",
+    "response_size": "15 KB",
+    "response_time": "233 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Data fetched successfully",
+    "data": {
+      "user_id": 363,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "manager",
+      "created_at": "2026-01-23T15:11:23Z"
+    }
+  }
+}

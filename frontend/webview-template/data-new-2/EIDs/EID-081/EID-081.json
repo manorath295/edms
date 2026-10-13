@@ -1,0 +1,12 @@
+{
+  "eid": "EID-081",
+  "count": 1,
+  "qpPairs": 3,
+  "annotation": "auth endpoint for admin operations",
+  "method": "DELETE",
+  "path": "/api/notifications/admin/summary/history",
+  "tags": [
+    "auth"
+  ],
+  "status": "active"
+}

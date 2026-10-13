@@ -1,0 +1,14 @@
+{
+  "eid": "EID-073",
+  "count": 1,
+  "qpPairs": 5,
+  "annotation": "system API endpoint used for analytics",
+  "method": "POST",
+  "path": "/api/v1/analytics/system/notifications",
+  "tags": [
+    "analytics",
+    "system",
+    "reports"
+  ],
+  "status": "active"
+}

@@ -1,0 +1,13 @@
+{
+  "eid": "EID-093",
+  "count": 4,
+  "qpPairs": 1,
+  "annotation": "history auth endpoint request processing",
+  "method": "PUT",
+  "path": "/api/v2/notifications/logout/history",
+  "tags": [
+    "analytics",
+    "auth"
+  ],
+  "status": "active"
+}

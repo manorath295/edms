@@ -1,0 +1,15 @@
+{
+  "eid": "EID-080",
+  "count": 1,
+  "qpPairs": 3,
+  "annotation": "list admin endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/list/v2",
+  "tags": [
+    "admin",
+    "products",
+    "billing",
+    "auth"
+  ],
+  "status": "active"
+}

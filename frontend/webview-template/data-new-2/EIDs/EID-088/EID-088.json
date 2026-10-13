@@ -1,0 +1,12 @@
+{
+  "eid": "EID-088",
+  "count": 2,
+  "qpPairs": 5,
+  "annotation": "update inventory endpoint request processing",
+  "method": "POST",
+  "path": "/api/list/update",
+  "tags": [
+    "inventory"
+  ],
+  "status": "deprecated"
+}

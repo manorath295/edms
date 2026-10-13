@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-092-request1",
+  "endpoint_id": "EID-092",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "application/xml",
+    "authorization": "Bearer Token",
+    "request_size": "9 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "low",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

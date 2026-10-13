@@ -1,0 +1,12 @@
+{
+  "eid": "EID-021",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "profile inventory endpoint request processing",
+  "method": "POST",
+  "path": "/api/delete/profile",
+  "tags": [
+    "inventory"
+  ],
+  "status": "inactive"
+}

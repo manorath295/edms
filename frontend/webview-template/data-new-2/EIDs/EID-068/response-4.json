@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-068-response4",
+  "endpoint_id": "EID-068",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/json",
+    "response_size": "7 KB",
+    "response_time": "767 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Resource updated successfully",
+    "data": {
+      "user_id": 7881,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "manager",
+      "created_at": "2025-07-07T14:01:26Z"
+    }
+  }
+}

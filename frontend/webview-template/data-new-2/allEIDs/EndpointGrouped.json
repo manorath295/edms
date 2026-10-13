@@ -1,0 +1,1265 @@
+{
+  "/api/list/users/admin": {
+    "DELETE": {
+      "eid": "EID-001",
+      "qpPairs": 2,
+      "annotation": "analytics API endpoint used for admin",
+      "tags": [
+        "support",
+        "analytics",
+        "reports"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/reports/login": {
+    "DELETE": {
+      "eid": "EID-002",
+      "qpPairs": 2,
+      "annotation": "users endpoint for reports operations",
+      "tags": [
+        "products",
+        "reports",
+        "users",
+        "orders"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/update/orders": {
+    "PATCH": {
+      "eid": "EID-003",
+      "qpPairs": 3,
+      "annotation": "support API endpoint used for orders",
+      "tags": [
+        "support",
+        "admin"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/orders/v1": {
+    "DELETE": {
+      "eid": "EID-004",
+      "qpPairs": 4,
+      "annotation": "users endpoint for orders operations",
+      "tags": [
+        "users"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/products/auth/admin": {
+    "PUT": {
+      "eid": "EID-005",
+      "qpPairs": 1,
+      "annotation": "admin inventory endpoint request processing",
+      "tags": [
+        "inventory"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/products/history/billing/status": {
+    "GET": {
+      "eid": "EID-006",
+      "qpPairs": 5,
+      "annotation": "products support endpoint request processing",
+      "tags": [
+        "support",
+        "users",
+        "analytics"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/inventory/reports": {
+    "PUT": {
+      "eid": "EID-007",
+      "qpPairs": 2,
+      "annotation": "system endpoint for inventory operations",
+      "tags": [
+        "system"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/status/admin": {
+    "PATCH": {
+      "eid": "EID-008",
+      "qpPairs": 1,
+      "annotation": "analytics API endpoint used for status",
+      "tags": [
+        "analytics"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/admin/login/users": {
+    "DELETE": {
+      "eid": "EID-009",
+      "qpPairs": 1,
+      "annotation": "system API endpoint used for login",
+      "tags": [
+        "auth",
+        "system",
+        "orders"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/details/v1/analytics/system": {
+    "GET": {
+      "eid": "EID-010",
+      "qpPairs": 2,
+      "annotation": "admin analytics endpoint handling request operations",
+      "tags": [
+        "reports",
+        "admin"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/list/notifications": {
+    "PATCH": {
+      "eid": "EID-011",
+      "qpPairs": 4,
+      "annotation": "inventory API endpoint used for notifications",
+      "tags": [
+        "billing",
+        "inventory"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/create/update/logout": {
+    "PUT": {
+      "eid": "EID-012",
+      "qpPairs": 3,
+      "annotation": "auth update endpoint handling request operations",
+      "tags": [
+        "admin",
+        "auth"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/stats/details/notifications": {
+    "POST": {
+      "eid": "EID-013",
+      "qpPairs": 5,
+      "annotation": "details system endpoint request processing",
+      "tags": [
+        "billing",
+        "notifications",
+        "system"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/details/system": {
+    "PATCH": {
+      "eid": "EID-014",
+      "qpPairs": 5,
+      "annotation": "billing API endpoint used for details",
+      "tags": [
+        "reports",
+        "billing",
+        "notifications",
+        "system"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/history/admin/create": {
+    "GET": {
+      "eid": "EID-015",
+      "qpPairs": 2,
+      "annotation": "admin notifications endpoint request processing",
+      "tags": [
+        "notifications"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/login/auth/admin": {
+    "POST": {
+      "eid": "EID-016",
+      "qpPairs": 5,
+      "annotation": "system API endpoint used for auth",
+      "tags": [
+        "system",
+        "reports"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/history/list/update/logout": {
+    "POST": {
+      "eid": "EID-017",
+      "qpPairs": 3,
+      "annotation": "update orders endpoint request processing",
+      "tags": [
+        "auth",
+        "orders",
+        "reports",
+        "inventory"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/users/reports": {
+    "GET": {
+      "eid": "EID-018",
+      "qpPairs": 1,
+      "annotation": "auth reports endpoint handling request operations",
+      "tags": [
+        "reports",
+        "inventory",
+        "admin",
+        "auth"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/billing/details/update": {
+    "POST": {
+      "eid": "EID-019",
+      "qpPairs": 2,
+      "annotation": "reports API endpoint used for billing",
+      "tags": [
+        "products",
+        "reports"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/logout/support": {
+    "PATCH": {
+      "eid": "EID-020",
+      "qpPairs": 5,
+      "annotation": "products logout endpoint handling request operations",
+      "tags": [
+        "products",
+        "auth",
+        "orders",
+        "admin"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/delete/profile": {
+    "POST": {
+      "eid": "EID-021",
+      "qpPairs": 4,
+      "annotation": "profile inventory endpoint request processing",
+      "tags": [
+        "inventory"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/inventory/support/details": {
+    "PATCH": {
+      "eid": "EID-022",
+      "qpPairs": 1,
+      "annotation": "notifications endpoint for inventory operations",
+      "tags": [
+        "notifications"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/update/stats": {
+    "GET": {
+      "eid": "EID-023",
+      "qpPairs": 1,
+      "annotation": "auth API endpoint used for stats",
+      "tags": [
+        "auth",
+        "notifications",
+        "system",
+        "analytics"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/system/auth/update/notifications": {
+    "PUT": {
+      "eid": "EID-024",
+      "qpPairs": 2,
+      "annotation": "reports endpoint for update operations",
+      "tags": [
+        "billing",
+        "admin",
+        "reports",
+        "analytics"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/stats/create/login": {
+    "DELETE": {
+      "eid": "EID-025",
+      "qpPairs": 4,
+      "annotation": "login reports endpoint request processing",
+      "tags": [
+        "reports"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/notifications/status": {
+    "POST": {
+      "eid": "EID-026",
+      "qpPairs": 5,
+      "annotation": "admin API endpoint used for notifications",
+      "tags": [
+        "auth",
+        "admin",
+        "inventory",
+        "users"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/delete/products": {
+    "PUT": {
+      "eid": "EID-027",
+      "qpPairs": 2,
+      "annotation": "system products endpoint handling request operations",
+      "tags": [
+        "system",
+        "billing",
+        "notifications",
+        "reports"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/summary/create": {
+    "GET": {
+      "eid": "EID-028",
+      "qpPairs": 5,
+      "annotation": "auth create endpoint handling request operations",
+      "tags": [
+        "orders",
+        "billing",
+        "admin",
+        "auth"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/support/reports/system/create": {
+    "POST": {
+      "eid": "EID-029",
+      "qpPairs": 3,
+      "annotation": "auth endpoint for reports operations",
+      "tags": [
+        "auth",
+        "admin",
+        "orders"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/profile/history/reports": {
+    "GET": {
+      "eid": "EID-030",
+      "qpPairs": 2,
+      "annotation": "products history endpoint handling request operations",
+      "tags": [
+        "products",
+        "system"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/users/admin": {
+    "PUT": {
+      "eid": "EID-031",
+      "qpPairs": 1,
+      "annotation": "users support endpoint request processing",
+      "tags": [
+        "inventory",
+        "orders",
+        "system",
+        "support"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/status/reports": {
+    "POST": {
+      "eid": "EID-032",
+      "qpPairs": 3,
+      "annotation": "notifications API endpoint used for reports",
+      "tags": [
+        "notifications"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/stats/admin/system/list": {
+    "PATCH": {
+      "eid": "EID-033",
+      "qpPairs": 1,
+      "annotation": "products endpoint for admin operations",
+      "tags": [
+        "orders",
+        "notifications",
+        "products"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/update/create/billing/inventory": {
+    "PATCH": {
+      "eid": "EID-034",
+      "qpPairs": 4,
+      "annotation": "users API endpoint used for billing",
+      "tags": [
+        "users"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/reports/create/logout/stats": {
+    "POST": {
+      "eid": "EID-035",
+      "qpPairs": 3,
+      "annotation": "create reports endpoint request processing",
+      "tags": [
+        "reports",
+        "notifications"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/status/details/summary/update": {
+    "DELETE": {
+      "eid": "EID-036",
+      "qpPairs": 5,
+      "annotation": "inventory update endpoint handling request operations",
+      "tags": [
+        "inventory",
+        "system",
+        "users"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/orders/v1/reports/details": {
+    "DELETE": {
+      "eid": "EID-037",
+      "qpPairs": 5,
+      "annotation": "details inventory endpoint request processing",
+      "tags": [
+        "inventory",
+        "notifications"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/system/summary/orders/stats": {
+    "POST": {
+      "eid": "EID-038",
+      "qpPairs": 2,
+      "annotation": "auth endpoint for orders operations",
+      "tags": [
+        "auth",
+        "reports"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/create/summary/status": {
+    "PUT": {
+      "eid": "EID-039",
+      "qpPairs": 4,
+      "annotation": "notifications API endpoint used for create",
+      "tags": [
+        "system",
+        "notifications",
+        "orders",
+        "auth"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/analytics/list/logout": {
+    "POST": {
+      "eid": "EID-040",
+      "qpPairs": 1,
+      "annotation": "inventory list endpoint handling request operations",
+      "tags": [
+        "admin",
+        "inventory"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/details/auth/support": {
+    "PUT": {
+      "eid": "EID-041",
+      "qpPairs": 3,
+      "annotation": "auth details endpoint handling request operations",
+      "tags": [
+        "auth",
+        "users"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/analytics/create/logout": {
+    "PATCH": {
+      "eid": "EID-042",
+      "qpPairs": 4,
+      "annotation": "analytics products endpoint request processing",
+      "tags": [
+        "products"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/history/status": {
+    "POST": {
+      "eid": "EID-043",
+      "qpPairs": 1,
+      "annotation": "billing history endpoint handling request operations",
+      "tags": [
+        "admin",
+        "billing"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/products/delete": {
+    "PATCH": {
+      "eid": "EID-044",
+      "qpPairs": 1,
+      "annotation": "analytics API endpoint used for delete",
+      "tags": [
+        "analytics",
+        "inventory",
+        "auth"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/admin/users/v2/orders": {
+    "PUT": {
+      "eid": "EID-045",
+      "qpPairs": 3,
+      "annotation": "orders users endpoint request processing",
+      "tags": [
+        "users"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/users/v2/history": {
+    "PUT": {
+      "eid": "EID-046",
+      "qpPairs": 4,
+      "annotation": "history reports endpoint request processing",
+      "tags": [
+        "system",
+        "analytics",
+        "reports"
+      ],
+      "status": "inactive"
+    },
+    "GET": {
+      "eid": "EID-047",
+      "qpPairs": 4,
+      "annotation": "reports reports endpoint handling request operations",
+      "tags": [
+        "products",
+        "reports",
+        "admin"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/update/reports": {
+    "GET": {
+      "eid": "EID-047",
+      "qpPairs": 4,
+      "annotation": "reports reports endpoint handling request operations",
+      "tags": [
+        "products",
+        "reports",
+        "admin"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/orders/auth/products/list": {
+    "POST": {
+      "eid": "EID-048",
+      "qpPairs": 2,
+      "annotation": "products endpoint for products operations",
+      "tags": [
+        "support",
+        "products",
+        "auth",
+        "billing"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/products/history/status/notifications": {
+    "DELETE": {
+      "eid": "EID-049",
+      "qpPairs": 4,
+      "annotation": "history auth endpoint request processing",
+      "tags": [
+        "orders",
+        "auth"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/status/details": {
+    "PUT": {
+      "eid": "EID-050",
+      "qpPairs": 1,
+      "annotation": "notifications endpoint for details operations",
+      "tags": [
+        "inventory",
+        "admin",
+        "support",
+        "notifications"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/notifications/reports/list": {
+    "GET": {
+      "eid": "EID-051",
+      "qpPairs": 5,
+      "annotation": "users API endpoint used for notifications",
+      "tags": [
+        "orders",
+        "products",
+        "users"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/create/admin/inventory/system": {
+    "POST": {
+      "eid": "EID-052",
+      "qpPairs": 2,
+      "annotation": "reports admin endpoint handling request operations",
+      "tags": [
+        "reports",
+        "admin"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/billing/logout/summary/reports": {
+    "PUT": {
+      "eid": "EID-053",
+      "qpPairs": 1,
+      "annotation": "billing auth endpoint request processing",
+      "tags": [
+        "auth",
+        "analytics"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/inventory/status/billing": {
+    "DELETE": {
+      "eid": "EID-054",
+      "qpPairs": 4,
+      "annotation": "system inventory endpoint handling request operations",
+      "tags": [
+        "support",
+        "system",
+        "users"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/update/details/v1": {
+    "POST": {
+      "eid": "EID-055",
+      "qpPairs": 1,
+      "annotation": "update orders endpoint request processing",
+      "tags": [
+        "orders"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/reports/auth/analytics": {
+    "GET": {
+      "eid": "EID-056",
+      "qpPairs": 1,
+      "annotation": "analytics notifications endpoint request processing",
+      "tags": [
+        "notifications",
+        "products"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/inventory/delete/system/summary": {
+    "GET": {
+      "eid": "EID-057",
+      "qpPairs": 1,
+      "annotation": "billing inventory endpoint handling request operations",
+      "tags": [
+        "billing",
+        "support",
+        "inventory",
+        "system"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/support/orders/analytics": {
+    "PUT": {
+      "eid": "EID-058",
+      "qpPairs": 5,
+      "annotation": "inventory endpoint for orders operations",
+      "tags": [
+        "system",
+        "inventory",
+        "notifications",
+        "billing"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/auth/history/products": {
+    "PATCH": {
+      "eid": "EID-059",
+      "qpPairs": 3,
+      "annotation": "inventory history endpoint handling request operations",
+      "tags": [
+        "inventory",
+        "billing",
+        "support",
+        "reports"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/reports/history/create": {
+    "PATCH": {
+      "eid": "EID-060",
+      "qpPairs": 4,
+      "annotation": "auth endpoint for create operations",
+      "tags": [
+        "auth",
+        "products"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/delete/history": {
+    "DELETE": {
+      "eid": "EID-061",
+      "qpPairs": 2,
+      "annotation": "orders endpoint for delete operations",
+      "tags": [
+        "orders",
+        "users"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/delete": {
+    "PUT": {
+      "eid": "EID-062",
+      "qpPairs": 5,
+      "annotation": "users endpoint for delete operations",
+      "tags": [
+        "users"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/reports/products/stats": {
+    "POST": {
+      "eid": "EID-063",
+      "qpPairs": 1,
+      "annotation": "stats products endpoint request processing",
+      "tags": [
+        "users",
+        "products",
+        "admin"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/orders/support/history": {
+    "DELETE": {
+      "eid": "EID-064",
+      "qpPairs": 5,
+      "annotation": "users endpoint for support operations",
+      "tags": [
+        "system",
+        "users",
+        "support"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/details/inventory": {
+    "PATCH": {
+      "eid": "EID-065",
+      "qpPairs": 5,
+      "annotation": "inventory API endpoint used for details",
+      "tags": [
+        "admin",
+        "system",
+        "support",
+        "inventory"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/auth/profile": {
+    "POST": {
+      "eid": "EID-066",
+      "qpPairs": 5,
+      "annotation": "profile billing endpoint request processing",
+      "tags": [
+        "billing"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/users/logout/login": {
+    "GET": {
+      "eid": "EID-067",
+      "qpPairs": 1,
+      "annotation": "logout orders endpoint request processing",
+      "tags": [
+        "billing",
+        "orders",
+        "system"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/history/create/profile": {
+    "PATCH": {
+      "eid": "EID-068",
+      "qpPairs": 5,
+      "annotation": "support endpoint for create operations",
+      "tags": [
+        "inventory",
+        "support",
+        "reports",
+        "notifications"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/analytics/system/status/logout": {
+    "DELETE": {
+      "eid": "EID-069",
+      "qpPairs": 1,
+      "annotation": "inventory endpoint for logout operations",
+      "tags": [
+        "inventory",
+        "support"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/logout/support/auth": {
+    "DELETE": {
+      "eid": "EID-070",
+      "qpPairs": 1,
+      "annotation": "orders endpoint for logout operations",
+      "tags": [
+        "orders",
+        "inventory",
+        "reports"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/users/notifications/create": {
+    "PATCH": {
+      "eid": "EID-071",
+      "qpPairs": 3,
+      "annotation": "users create endpoint handling request operations",
+      "tags": [
+        "auth",
+        "users",
+        "support"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/update/users": {
+    "GET": {
+      "eid": "EID-072",
+      "qpPairs": 3,
+      "annotation": "products users endpoint handling request operations",
+      "tags": [
+        "analytics",
+        "products",
+        "system"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/analytics/system/notifications": {
+    "POST": {
+      "eid": "EID-073",
+      "qpPairs": 5,
+      "annotation": "system API endpoint used for analytics",
+      "tags": [
+        "analytics",
+        "system",
+        "reports"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/auth/analytics/history": {
+    "GET": {
+      "eid": "EID-074",
+      "qpPairs": 4,
+      "annotation": "history products endpoint request processing",
+      "tags": [
+        "admin",
+        "notifications",
+        "products",
+        "orders"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/auth/admin": {
+    "PATCH": {
+      "eid": "EID-075",
+      "qpPairs": 5,
+      "annotation": "products admin endpoint handling request operations",
+      "tags": [
+        "products"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/details/list/admin/products": {
+    "PUT": {
+      "eid": "EID-076",
+      "qpPairs": 2,
+      "annotation": "orders endpoint for details operations",
+      "tags": [
+        "products",
+        "orders",
+        "analytics"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/orders/users/products/stats": {
+    "PUT": {
+      "eid": "EID-077",
+      "qpPairs": 2,
+      "annotation": "stats admin endpoint request processing",
+      "tags": [
+        "admin"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/summary/auth": {
+    "POST": {
+      "eid": "EID-078",
+      "qpPairs": 3,
+      "annotation": "reports auth endpoint handling request operations",
+      "tags": [
+        "admin",
+        "reports",
+        "products",
+        "orders"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/users/create/auth/login": {
+    "GET": {
+      "eid": "EID-079",
+      "qpPairs": 4,
+      "annotation": "products endpoint for users operations",
+      "tags": [
+        "products"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/list/v2": {
+    "DELETE": {
+      "eid": "EID-080",
+      "qpPairs": 3,
+      "annotation": "list admin endpoint request processing",
+      "tags": [
+        "admin",
+        "products",
+        "billing",
+        "auth"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/notifications/admin/summary/history": {
+    "DELETE": {
+      "eid": "EID-081",
+      "qpPairs": 3,
+      "annotation": "auth endpoint for admin operations",
+      "tags": [
+        "auth"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/summary/details": {
+    "DELETE": {
+      "eid": "EID-082",
+      "qpPairs": 3,
+      "annotation": "summary support endpoint request processing",
+      "tags": [
+        "support"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/orders/profile/admin/analytics": {
+    "PATCH": {
+      "eid": "EID-083",
+      "qpPairs": 5,
+      "annotation": "profile admin endpoint request processing",
+      "tags": [
+        "users",
+        "admin"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/summary/auth/system/billing": {
+    "POST": {
+      "eid": "EID-084",
+      "qpPairs": 3,
+      "annotation": "system auth endpoint handling request operations",
+      "tags": [
+        "system"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/orders/support": {
+    "GET": {
+      "eid": "EID-085",
+      "qpPairs": 1,
+      "annotation": "orders orders endpoint request processing",
+      "tags": [
+        "notifications",
+        "orders",
+        "products"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/billing/v1": {
+    "POST": {
+      "eid": "EID-086",
+      "qpPairs": 1,
+      "annotation": "users endpoint for billing operations",
+      "tags": [
+        "users",
+        "orders",
+        "support",
+        "notifications"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/stats/v2/system": {
+    "PUT": {
+      "eid": "EID-087",
+      "qpPairs": 3,
+      "annotation": "products API endpoint used for stats",
+      "tags": [
+        "products"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/list/update": {
+    "POST": {
+      "eid": "EID-088",
+      "qpPairs": 5,
+      "annotation": "update inventory endpoint request processing",
+      "tags": [
+        "inventory"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/logout/inventory": {
+    "PUT": {
+      "eid": "EID-089",
+      "qpPairs": 4,
+      "annotation": "reports inventory endpoint handling request operations",
+      "tags": [
+        "reports",
+        "users"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/details/auth/stats": {
+    "GET": {
+      "eid": "EID-090",
+      "qpPairs": 5,
+      "annotation": "reports API endpoint used for stats",
+      "tags": [
+        "inventory",
+        "reports"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v1/list/reports/profile/create": {
+    "PUT": {
+      "eid": "EID-091",
+      "qpPairs": 3,
+      "annotation": "billing endpoint for profile operations",
+      "tags": [
+        "billing",
+        "inventory",
+        "reports"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/summary/support/update/logout": {
+    "POST": {
+      "eid": "EID-092",
+      "qpPairs": 2,
+      "annotation": "orders support endpoint handling request operations",
+      "tags": [
+        "orders",
+        "users",
+        "support"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/v2/notifications/logout/history": {
+    "PUT": {
+      "eid": "EID-093",
+      "qpPairs": 1,
+      "annotation": "history auth endpoint request processing",
+      "tags": [
+        "analytics",
+        "auth"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/auth/delete": {
+    "GET": {
+      "eid": "EID-094",
+      "qpPairs": 2,
+      "annotation": "billing API endpoint used for auth",
+      "tags": [
+        "billing",
+        "notifications",
+        "products"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/stats/inventory/history/products": {
+    "POST": {
+      "eid": "EID-095",
+      "qpPairs": 4,
+      "annotation": "billing endpoint for history operations",
+      "tags": [
+        "admin",
+        "reports",
+        "billing",
+        "products"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v1/analytics/history": {
+    "DELETE": {
+      "eid": "EID-096",
+      "qpPairs": 4,
+      "annotation": "history analytics endpoint request processing",
+      "tags": [
+        "analytics"
+      ],
+      "status": "deprecated"
+    }
+  },
+  "/api/status/update": {
+    "POST": {
+      "eid": "EID-097",
+      "qpPairs": 3,
+      "annotation": "update reports endpoint request processing",
+      "tags": [
+        "system",
+        "analytics",
+        "reports"
+      ],
+      "status": "inactive"
+    }
+  },
+  "/api/v2/inventory/users/profile/admin": {
+    "POST": {
+      "eid": "EID-098",
+      "qpPairs": 4,
+      "annotation": "admin API endpoint used for users",
+      "tags": [
+        "admin",
+        "support"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v1/profile/billing/create/system": {
+    "PUT": {
+      "eid": "EID-099",
+      "qpPairs": 5,
+      "annotation": "support endpoint for create operations",
+      "tags": [
+        "support",
+        "users",
+        "system"
+      ],
+      "status": "active"
+    }
+  },
+  "/api/v2/reports/notifications/users": {
+    "DELETE": {
+      "eid": "EID-100",
+      "qpPairs": 3,
+      "annotation": "inventory endpoint for reports operations",
+      "tags": [
+        "inventory",
+        "auth",
+        "products",
+        "orders"
+      ],
+      "status": "active"
+    }
+  }
+}

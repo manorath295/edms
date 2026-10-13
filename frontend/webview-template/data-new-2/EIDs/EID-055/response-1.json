@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-055-response1",
+  "endpoint_id": "EID-055",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "text/plain",
+    "response_size": "11 KB",
+    "response_time": "838 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Report generated successfully",
+    "data": {
+      "user_id": 4481,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "manager",
+      "created_at": "2025-01-18T07:35:15Z"
+    }
+  }
+}

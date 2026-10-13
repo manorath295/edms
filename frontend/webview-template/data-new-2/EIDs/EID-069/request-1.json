@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-069-request1",
+  "endpoint_id": "EID-069",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "8 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "delete_record",
+      "priority": "medium",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-075-response3",
+  "endpoint_id": "EID-075",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "text/plain",
+    "response_size": "13 KB",
+    "response_time": "372 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Resource updated successfully",
+    "data": {
+      "user_id": 8153,
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com",
+      "role": "user",
+      "created_at": "2025-04-12T07:55:26Z"
+    }
+  }
+}

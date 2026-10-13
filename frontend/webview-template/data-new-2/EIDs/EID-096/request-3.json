@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-096-request3",
+  "endpoint_id": "EID-096",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "application/json",
+    "authorization": "Bearer Token",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "medium",
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com"
+    }
+  }
+}

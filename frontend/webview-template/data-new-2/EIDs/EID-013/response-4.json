@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-013-response4",
+  "endpoint_id": "EID-013",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "text/plain",
+    "response_size": "8 KB",
+    "response_time": "817 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 7422,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "manager",
+      "created_at": "2026-12-17T19:45:56Z"
+    }
+  }
+}

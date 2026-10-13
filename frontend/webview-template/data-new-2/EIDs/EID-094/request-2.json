@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-094-request2",
+  "endpoint_id": "EID-094",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "10 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "low",
+      "username": "jane_doe",
+      "email": "jane_doe@example.com"
+    }
+  }
+}

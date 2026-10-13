@@ -1,0 +1,12 @@
+{
+  "eid": "EID-022",
+  "count": 2,
+  "qpPairs": 1,
+  "annotation": "notifications endpoint for inventory operations",
+  "method": "PATCH",
+  "path": "/api/v1/inventory/support/details",
+  "tags": [
+    "notifications"
+  ],
+  "status": "active"
+}

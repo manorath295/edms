@@ -1,0 +1,14 @@
+{
+  "eid": "EID-029",
+  "count": 2,
+  "qpPairs": 3,
+  "annotation": "auth endpoint for reports operations",
+  "method": "POST",
+  "path": "/api/support/reports/system/create",
+  "tags": [
+    "auth",
+    "admin",
+    "orders"
+  ],
+  "status": "inactive"
+}

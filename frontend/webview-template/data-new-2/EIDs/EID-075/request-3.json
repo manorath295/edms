@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-075-request3",
+  "endpoint_id": "EID-075",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "5 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "high",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

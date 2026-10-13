@@ -1,0 +1,14 @@
+{
+  "eid": "EID-092",
+  "count": 3,
+  "qpPairs": 2,
+  "annotation": "orders support endpoint handling request operations",
+  "method": "POST",
+  "path": "/api/v2/summary/support/update/logout",
+  "tags": [
+    "orders",
+    "users",
+    "support"
+  ],
+  "status": "deprecated"
+}

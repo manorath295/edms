@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-067-response1",
+  "endpoint_id": "EID-067",
+  "meta_data": {
+    "status_code": 201,
+    "content_type": "application/json",
+    "response_size": "10 KB",
+    "response_time": "230 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 201,
+    "message": "Report generated successfully",
+    "data": {
+      "user_id": 7183,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "user",
+      "created_at": "2026-11-16T05:22:40Z"
+    }
+  }
+}

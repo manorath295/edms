@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-038-response1",
+  "endpoint_id": "EID-038",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/xml",
+    "response_size": "1 KB",
+    "response_time": "503 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "User created successfully",
+    "data": {
+      "user_id": 7921,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "user",
+      "created_at": "2026-04-14T21:52:47Z"
+    }
+  }
+}

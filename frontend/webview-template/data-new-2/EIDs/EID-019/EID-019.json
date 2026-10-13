@@ -1,0 +1,13 @@
+{
+  "eid": "EID-019",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "reports API endpoint used for billing",
+  "method": "POST",
+  "path": "/api/v2/billing/details/update",
+  "tags": [
+    "products",
+    "reports"
+  ],
+  "status": "active"
+}

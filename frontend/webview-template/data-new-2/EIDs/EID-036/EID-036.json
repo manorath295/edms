@@ -1,0 +1,14 @@
+{
+  "eid": "EID-036",
+  "count": 3,
+  "qpPairs": 5,
+  "annotation": "inventory update endpoint handling request operations",
+  "method": "DELETE",
+  "path": "/api/v1/status/details/summary/update",
+  "tags": [
+    "inventory",
+    "system",
+    "users"
+  ],
+  "status": "inactive"
+}

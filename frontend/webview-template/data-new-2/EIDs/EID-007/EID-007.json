@@ -1,0 +1,12 @@
+{
+  "eid": "EID-007",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "system endpoint for inventory operations",
+  "method": "PUT",
+  "path": "/api/v2/inventory/reports",
+  "tags": [
+    "system"
+  ],
+  "status": "deprecated"
+}

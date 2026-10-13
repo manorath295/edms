@@ -1,0 +1,15 @@
+{
+  "eid": "EID-068",
+  "count": 3,
+  "qpPairs": 5,
+  "annotation": "support endpoint for create operations",
+  "method": "PATCH",
+  "path": "/api/v2/history/create/profile",
+  "tags": [
+    "inventory",
+    "support",
+    "reports",
+    "notifications"
+  ],
+  "status": "deprecated"
+}

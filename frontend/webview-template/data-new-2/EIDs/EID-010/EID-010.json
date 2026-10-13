@@ -1,0 +1,13 @@
+{
+  "eid": "EID-010",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "admin analytics endpoint handling request operations",
+  "method": "GET",
+  "path": "/api/details/v1/analytics/system",
+  "tags": [
+    "reports",
+    "admin"
+  ],
+  "status": "inactive"
+}

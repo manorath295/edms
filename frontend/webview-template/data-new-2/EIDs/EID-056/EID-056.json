@@ -1,0 +1,13 @@
+{
+  "eid": "EID-056",
+  "count": 1,
+  "qpPairs": 1,
+  "annotation": "analytics notifications endpoint request processing",
+  "method": "GET",
+  "path": "/api/v2/reports/auth/analytics",
+  "tags": [
+    "notifications",
+    "products"
+  ],
+  "status": "deprecated"
+}

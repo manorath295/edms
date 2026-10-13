@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-075-response1",
+  "endpoint_id": "EID-075",
+  "meta_data": {
+    "status_code": 404,
+    "content_type": "text/plain",
+    "response_size": "12 KB",
+    "response_time": "552 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 404,
+    "message": "Resource not found",
+    "data": {
+      "user_id": 9793,
+      "username": "emma_brown",
+      "email": "emma_brown@example.com",
+      "role": "support",
+      "created_at": "2026-02-20T16:25:17Z"
+    }
+  }
+}

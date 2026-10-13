@@ -1,0 +1,13 @@
+{
+  "eid": "EID-083",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "profile admin endpoint request processing",
+  "method": "PATCH",
+  "path": "/api/v1/orders/profile/admin/analytics",
+  "tags": [
+    "users",
+    "admin"
+  ],
+  "status": "active"
+}

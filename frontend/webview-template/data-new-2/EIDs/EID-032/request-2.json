@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-032-request2",
+  "endpoint_id": "EID-032",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "application/xml",
+    "authorization": "Bearer Token",
+    "request_size": "6 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/xml"
+    },
+    "data": {
+      "task": "fetch_orders",
+      "priority": "medium",
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-017-request3",
+  "endpoint_id": "EID-017",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "medium",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

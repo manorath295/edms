@@ -1,0 +1,14 @@
+{
+  "eid": "EID-070",
+  "count": 2,
+  "qpPairs": 1,
+  "annotation": "orders endpoint for logout operations",
+  "method": "DELETE",
+  "path": "/api/logout/support/auth",
+  "tags": [
+    "orders",
+    "inventory",
+    "reports"
+  ],
+  "status": "deprecated"
+}

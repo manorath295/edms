@@ -1,0 +1,12 @@
+{
+  "eid": "EID-096",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "history analytics endpoint request processing",
+  "method": "DELETE",
+  "path": "/api/v1/analytics/history",
+  "tags": [
+    "analytics"
+  ],
+  "status": "deprecated"
+}

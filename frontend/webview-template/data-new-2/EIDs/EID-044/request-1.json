@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-044-request1",
+  "endpoint_id": "EID-044",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "4 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "medium",
+      "username": "jane_doe",
+      "email": "jane_doe@example.com"
+    }
+  }
+}

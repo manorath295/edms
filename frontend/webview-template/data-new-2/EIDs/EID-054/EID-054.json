@@ -1,0 +1,14 @@
+{
+  "eid": "EID-054",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "system inventory endpoint handling request operations",
+  "method": "DELETE",
+  "path": "/api/v2/inventory/status/billing",
+  "tags": [
+    "support",
+    "system",
+    "users"
+  ],
+  "status": "deprecated"
+}

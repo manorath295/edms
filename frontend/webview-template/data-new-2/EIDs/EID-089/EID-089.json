@@ -1,0 +1,13 @@
+{
+  "eid": "EID-089",
+  "count": 3,
+  "qpPairs": 4,
+  "annotation": "reports inventory endpoint handling request operations",
+  "method": "PUT",
+  "path": "/api/v2/logout/inventory",
+  "tags": [
+    "reports",
+    "users"
+  ],
+  "status": "deprecated"
+}

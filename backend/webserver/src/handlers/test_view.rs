@@ -1,0 +1,1190 @@
+use axum::{
+    extract::{
+        ws::{Message, WebSocket, WebSocketUpgrade},
+        Path, State,
+    },
+    http::StatusCode,
+    response::IntoResponse,
+    Json,
+};
+use serde::Deserialize;
+use serde_json::{json, Value};
+
+use crate::{
+    db,
+    events::ServerEvent,
+    ipc,
+    state::AppState,
+    timer::{self, TimerConfig},
+};
+
+use edms::error::EdmsError;
+
+// ── WS handlers ──────────────────────────────────────────────────────
+
+pub async fn ws_load_endpoints(ws: WebSocketUpgrade, State(state): State<AppState>) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_subscribe_endpoints(socket, state).await;
+    })
+}
+
+/// GET /test-view/:collection/bookmarks/load — collection-scoped, unlike
+/// the old parameter-less version that read `state.active_collection`.
+pub async fn ws_load_bookmarks(
+    ws: WebSocketUpgrade,
+    State(state): State<AppState>,
+    Path(collection): Path<String>,
+) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_subscribe_bookmarks(socket, state, collection).await;
+    })
+}
+
+/// GET /test-view/history/load
+///
+/// Was missing entirely — db::list_history() existed but nothing called it,
+/// so there was no way (REST or WS) to actually read history back, only
+/// POST /test-view/save/history to write it. Mirrors ws_load_endpoints /
+/// ws_load_bookmarks: sends an initial snapshot, then streams events.
+pub async fn ws_load_history(ws: WebSocketUpgrade, State(state): State<AppState>) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_subscribe_history(socket, state).await;
+    })
+}
+
+pub async fn ws_run(ws: WebSocketUpgrade, State(state): State<AppState>) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_run(socket, state).await;
+    })
+}
+
+#[derive(Debug, Deserialize)]
+pub struct StopRequest {
+    pub endpoint_id: String,
+    pub request_number: i32,
+}
+
+/// POST /test-view/stop
+///
+/// Cancels the app's own countdown timer for this test — the UI stops
+/// getting TimerTick/expects-a-result state for it, and a TimerCancelled
+/// event fires (same path the timer's own natural completion uses).
+///
+/// Honest limitation: this does NOT kill the actual in-flight HTTP call.
+/// That's already running in a separate, detached edms-child process by
+/// the time this is called, and nothing tracks a handle to it — so a slow
+/// or hanging request keeps running in the background regardless. This
+/// only stops the app from waiting on / reporting about it.
+pub async fn stop(
+    State(state): State<AppState>,
+    Json(payload): Json<StopRequest>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let cancelled = state.cancel_timer(&payload.endpoint_id, payload.request_number);
+    (
+        StatusCode::OK,
+        Json(json!({
+            "ok": true,
+            "timer_cancelled": cancelled,
+            "message": if cancelled {
+                "Timer stopped. Note: the underlying HTTP call may still complete in the background."
+            } else {
+                "No running timer found for that endpoint/request — it may have already finished."
+            }
+        })),
+    )
+}
+
+pub async fn save_history(
+    State(state): State<AppState>,
+    Json(payload): Json<Value>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let endpoint_id = payload["endpoint_id"].as_str().unwrap_or("").to_string();
+    let action = payload["action"].as_str().unwrap_or("test").to_string();
+    let details = payload.get("details").and_then(|v| v.as_str()).map(|s| s.to_string());
+
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        move || db::insert_history(&st.core, &st.queries, &endpoint_id, &action, details.as_deref())
+    })
+    .await;
+
+    match res {
+        Ok(Ok(_)) => {
+            let count = tokio::task::spawn_blocking({
+                let st = state.clone();
+                move || db::history_count(&st.core, &st.queries)
+            })
+            .await
+            .unwrap_or(Ok(0))
+            .unwrap_or(0);
+
+            state.emit(ServerEvent::HistoryUpdated { count }).await;
+            (StatusCode::OK, Json(json!({ "ok": true, "history_count": count })))
+        }
+        Ok(Err(e)) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+    }
+}
+
+/// POST /test-view/save/bookmark — body now requires `collection` too,
+/// since there's no more implicit "the loaded one" to fall back to.
+pub async fn save_bookmark(
+    State(state): State<AppState>,
+    Json(payload): Json<Value>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let collection = payload["collection"].as_str().unwrap_or("").to_string();
+    if collection.is_empty() {
+        return (
+            StatusCode::BAD_REQUEST,
+            Json(json!({ "ok": false, "error": "collection is required" })),
+        );
+    }
+    let endpoint_id = payload["endpoint_id"].as_str().unwrap_or("").to_string();
+    let notes = payload.get("notes").and_then(|v| v.as_str()).map(|s| s.to_string());
+
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let collection = collection.clone();
+        move || db::insert_bookmark(&st.core, &st.queries, &endpoint_id, &collection, notes.as_deref())
+    })
+    .await;
+
+    match res {
+        Ok(Ok(_)) => {
+            let count = tokio::task::spawn_blocking({
+                let st = state.clone();
+                let collection = collection.clone();
+                move || db::bookmarks_count(&st.core, &st.queries, &collection)
+            })
+            .await
+            .unwrap_or(Ok(0))
+            .unwrap_or(0);
+
+            state.refresh_dashboard_snapshot();
+            state.emit(ServerEvent::BookmarksUpdated { collection, count }).await;
+            (StatusCode::OK, Json(json!({ "ok": true, "bookmark_count": count })))
+        }
+        Ok(Err(e)) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+    }
+}
+
+pub async fn ws_add_from_history_to_bookmark(
+    ws: WebSocketUpgrade,
+    State(state): State<AppState>,
+    Path(bookmark): Path<String>,
+) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_add_from_history(socket, state, bookmark).await;
+    })
+}
+
+pub async fn ws_delete_from_bookmark(
+    ws: WebSocketUpgrade,
+    State(state): State<AppState>,
+    Path(bookmark): Path<String>,
+) -> impl IntoResponse {
+    ws.on_upgrade(move |socket| async move {
+        handle_ws_delete_from_bookmark(socket, state, bookmark).await;
+    })
+}
+
+pub async fn clear_history(State(state): State<AppState>) -> (StatusCode, Json<serde_json::Value>) {
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        move || db::clear_history(&st.core, &st.queries)
+    })
+    .await;
+
+    match res {
+        Ok(Ok(_)) => {
+            state.emit(ServerEvent::HistoryUpdated { count: 0 }).await;
+            (StatusCode::OK, Json(json!({ "ok": true })))
+        }
+        Ok(Err(e)) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+    }
+}
+
+/// POST /test-view/:collection/bookmark/clearall
+pub async fn clear_bookmarks(
+    State(state): State<AppState>,
+    Path(collection): Path<String>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let collection = collection.clone();
+        move || db::delete_bookmarks_for_folder(&st.core, &st.queries, &collection)
+    })
+    .await;
+
+    match res {
+        Ok(Ok(_)) => {
+            state.refresh_dashboard_snapshot();
+            state.emit(ServerEvent::BookmarksUpdated { collection, count: 0 }).await;
+            (StatusCode::OK, Json(json!({ "ok": true })))
+        }
+        Ok(Err(e)) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+    }
+}
+
+// ── Internal WS implementations ──────────────────────────────────────
+
+#[derive(Debug, Deserialize)]
+struct RunWrapper {
+    #[serde(rename = "type")]
+    _msg_type: String,
+    payload: RunMessage,
+}
+
+#[derive(Debug, Deserialize)]
+struct RunMessage {
+    /// Optional — per Mathew (2026-09-08), an endpoint is only created
+    /// the moment it's tested, not via a separate manual step. Omit this
+    /// to have a fresh canonical EID auto-allocated; pass an existing
+    /// one to re-test it (the common case); pass a not-yet-existing one
+    /// to create it with that exact id.
+    #[serde(default)]
+    endpoint_id: Option<String>,
+    /// The URL to test. Required even when re-testing an existing
+    /// endpoint_id — used only to create the row when it doesn't exist
+    /// yet; ignored (the stored endpoint_str wins) when it does.
+    endpoint_str: String,
+    method: String,
+    #[serde(default, alias = "request_json")]
+    body: Value,
+    #[serde(default)]
+    timeout_ms: u64,
+    #[serde(default)]
+    tick_interval_ms: u64,
+    /// Headers to send with this request — per Ravi (2026-09-04), the
+    /// third piece to capture alongside request/response.
+    #[serde(default)]
+    headers: std::collections::HashMap<String, String>,
+    /// Annotation to save if this run ends up creating a brand-new
+    /// endpoint. Ignored when re-testing an existing one.
+    #[serde(default)]
+    annotation: Option<String>,
+}
+
+impl RunMessage {
+    fn timer_config(&self) -> TimerConfig {
+        TimerConfig {
+            limit_ms: if self.timeout_ms > 0 { self.timeout_ms } else { 30_000 },
+            tick_interval_ms: if self.tick_interval_ms > 0 { self.tick_interval_ms } else { 500 },
+        }
+    }
+}
+
+async fn handle_ws_run(mut socket: WebSocket, state: AppState) {
+    let mut rx = state.events_tx.subscribe();
+
+    loop {
+        tokio::select! {
+            Ok(evt) = rx.recv() => {
+                let msg = json!({ "type": "event", "event": evt });
+                if socket.send(Message::Text(msg.to_string())).await.is_err() {
+                    break;
+                }
+            }
+            msg = socket.recv() => {
+                match msg {
+                    Some(Ok(Message::Text(text))) => {
+                        match serde_json::from_str::<RunWrapper>(&text) {
+                            Ok(wrapper) => {
+                                let run_msg = wrapper.payload;
+                                let st = state.clone();
+                                tokio::spawn(async move {
+                                    let timer_cfg = run_msg.timer_config();
+                                    if let Err(e) = run_test_impl(
+                                        &st,
+                                        run_msg.endpoint_id.as_deref(),
+                                        &run_msg.endpoint_str,
+                                        &run_msg.method,
+                                        run_msg.body.clone(),
+                                        run_msg.headers.clone(),
+                                        run_msg.annotation.clone(),
+                                        timer_cfg,
+                                    )
+                                    .await
+                                    {
+                                        let _ = st.events_tx.send(ServerEvent::Error {
+                                            message: format!("{e:?}"),
+                                        });
+                                    }
+                                });
+                            }
+                            Err(e) => {
+                                let resp = json!({"type":"error","message": format!("bad message: {e}")});
+                                let _ = socket.send(Message::Text(resp.to_string())).await;
+                            }
+                        }
+                    }
+                    Some(Ok(_)) => continue,
+                    _ => break,
+                }
+            }
+        }
+    }
+}
+
+// ═════════════════════════════════════════════════════════════════════
+//  run_test_impl
+// ═════════════════════════════════════════════════════════════════════
+
+async fn run_test_impl(
+    state: &AppState,
+    endpoint_id: Option<&str>,
+    endpoint_str: &str,
+    method: &str,
+    request_json: Value,
+    headers: std::collections::HashMap<String, String>,
+    annotation: Option<String>,
+    timer_cfg: TimerConfig,
+) -> Result<(), EdmsError> {
+    // 1) Get-or-create the endpoint — per Mathew (2026-09-08), an endpoint
+    //    is only created the moment it's actually tested. Re-testing an
+    //    existing endpoint_id is the common case (returned as-is); a new
+    //    or omitted id creates a fresh row here.
+    let (endpoint, was_created) = crate::handlers::endpoints::get_or_create_endpoint(
+        state,
+        endpoint_id,
+        endpoint_str,
+        Some(method.to_uppercase()),
+        annotation,
+    )
+    .await
+    .map_err(|(_, msg)| {
+        tracing::warn!("[run_test_impl] get_or_create_endpoint failed: {msg}");
+        EdmsError::UnknownError
+    })?;
+    let endpoint_id = endpoint.endpoint_id.clone();
+    if was_created {
+        state.refresh_dashboard_snapshot();
+    }
+
+    // 2) Allocate request number
+    let request_number = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let id = endpoint_id.to_string();
+        move || db::get_next_request_number(&st.core, &st.queries, &id)
+    })
+    .await
+    .map_err(|_| EdmsError::UnknownError)?
+    .map_err(|_| EdmsError::UnknownError)?;
+
+    // 3) Insert request metadata into DB
+    let method_upper = method.to_uppercase();
+    // Must match the {eid}-request-{N}.json filename write_request_file
+    // actually produces (compute::endpoint_writer) — these two were out of
+    // sync before, meaning the file this points at didn't exist.
+    let request_file = state
+        .endpoint_storage_dir(&endpoint_id)
+        .join(format!("{endpoint_id}-request-{request_number}.json"))
+        .display()
+        .to_string();
+
+    tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.to_string();
+        let rf = request_file.clone();
+        let m = method_upper.clone();
+        move || db::insert_request_metadata(&st.core, &st.queries, &eid, request_number, &rf, &m)
+    })
+    .await
+    .map_err(|_| EdmsError::UnknownError)?
+    .map_err(|_| EdmsError::UnknownError)?;
+
+    // 4) Spawn edms-child to write the request file to disk
+    //    Result comes back via /internal/callback
+    ipc::spawn_child(
+        "write_request",
+        json!({
+            "repo_path":  state.endpoint_storage_dir(&endpoint_id).display().to_string(),
+            "eid":        endpoint_id,
+            "req_index":  request_number,
+            "content":    serde_json::to_string(&request_json).unwrap_or_default(),
+        }),
+        3000,
+    );
+
+    // 5) Emit TestStarted
+    let _ = state.events_tx.send(ServerEvent::TestStarted {
+        endpoint_id: endpoint_id.to_string(),
+        request_number,
+    });
+
+    // 6) Start timer — keep the handle so callback.rs can cancel it once
+    //    the real outcome (success or timeout) is known, instead of letting
+    //    it tick on its own independent schedule.
+    let timer_handle = timer::spawn_timer(
+        endpoint_id.to_string(),
+        request_number,
+        timer_cfg.clone(),
+        state.events_tx.clone(),
+    );
+    state
+        .active_timers
+        .lock()
+        .unwrap()
+        .insert((endpoint_id.to_string(), request_number), timer_handle);
+
+    // 7) Spawn edms-child for the actual HTTP test call
+    //    This is the original run_test task — unchanged
+    ipc::spawn_child(
+        "run_test",
+        json!({
+            "endpoint_id":    endpoint_id,
+            "url":            endpoint.endpoint_str,
+            "method":         method_upper,
+            "body":           request_json,
+            "request_number": request_number,
+            "timeout_ms":     timer_cfg.limit_ms,
+            "headers":        headers,
+        }),
+        3000,
+    );
+
+    Ok(())
+}
+
+// ── Subscription handlers ─────────────────────────────────────────────
+
+async fn handle_ws_subscribe_endpoints(mut socket: WebSocket, state: AppState) {
+    let endpoints = tokio::task::spawn_blocking({
+        let st = state.clone();
+        move || db::list_endpoints(&st.core, &st.queries)
+    })
+    .await;
+
+    if let Ok(Ok(eps)) = endpoints {
+        let resp = json!({ "type": "snapshot", "endpoints": eps });
+        let _ = socket.send(Message::Text(resp.to_string())).await;
+        let _ = state.events_tx.send(ServerEvent::ActiveWorkspaceEndpointsLoaded {
+            count: eps.len(),
+        });
+    }
+
+    let mut rx = state.events_tx.subscribe();
+    while let Ok(evt) = rx.recv().await {
+        let msg = json!({ "type": "event", "event": evt });
+        if socket.send(Message::Text(msg.to_string())).await.is_err() {
+            break;
+        }
+    }
+}
+
+/// Collection-scoped now, unlike the old version that read
+/// `state.active_collection` — `collection` is always known (it's the
+/// path param), so there's no more `Option`/`None` branch to handle.
+async fn handle_ws_subscribe_bookmarks(mut socket: WebSocket, state: AppState, collection: String) {
+    // Per Mathew (2026-09-08): bookmark view resolves full endpoint data,
+    // not just EIDs — endpoints_for_ids already does that join. What's
+    // here is also marking, per endpoint, whether it's currently a *saved
+    // member* of this collection (vs. just bookmarked-but-not-yet-saved) —
+    // computed by cross-referencing against the collection's own
+    // membership set, never stored redundantly in the bookmarks table.
+    let bookmarks = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let collection = collection.clone();
+        move || {
+            let ids_with_timestamps =
+                db::list_bookmarked_endpoints_with_timestamps(&st.core, &st.queries, &collection)?;
+            let ids: Vec<String> = ids_with_timestamps.iter().map(|(id, _)| id.clone()).collect();
+            let endpoints = db::endpoints_for_ids(&st.core, &st.queries, &ids)?;
+            let updated_at: std::collections::HashMap<String, String> =
+                ids_with_timestamps.into_iter().collect();
+
+            let member_set = match crate::handlers::view_catalog::open_existing_collection_membership(&st, &collection)
+                .and_then(|m| m.list_set().map_err(|e| format!("{e:?}")))
+            {
+                Ok(set) => set,
+                Err(_) => std::collections::HashSet::new(),
+            };
+
+            Ok::<_, EdmsError>((endpoints, member_set, updated_at))
+        }
+    })
+    .await;
+
+    if let Ok(Ok((bks, member_set, updated_at))) = bookmarks {
+        let enriched: Vec<Value> = bks
+            .iter()
+            .map(|ep| {
+                let mut v = serde_json::to_value(ep).unwrap_or(Value::Null);
+                if let Some(obj) = v.as_object_mut() {
+                    obj.insert(
+                        "in_collection".to_string(),
+                        Value::Bool(member_set.contains(&ep.endpoint_id)),
+                    );
+                    obj.insert(
+                        "updated".to_string(),
+                        updated_at
+                            .get(&ep.endpoint_id)
+                            .cloned()
+                            .map(Value::String)
+                            .unwrap_or(Value::Null),
+                    );
+                }
+                v
+            })
+            .collect();
+        let count = enriched.len();
+        let resp = json!({
+            "type": "snapshot",
+            "collection": collection,
+            "bookmarks": enriched
+        });
+        let _ = socket.send(Message::Text(resp.to_string())).await;
+        let _ = state.events_tx.send(ServerEvent::ActiveWorkspaceBookmarksLoaded { count });
+    }
+
+    // Forward every event on the shared channel — same pattern every other
+    // subscribe-style WS route in this codebase uses. BookmarksUpdated and
+    // CollectionMembershipUpdated both carry `collection`, so the client
+    // filters to events about this one and ignores the rest.
+    let mut rx = state.events_tx.subscribe();
+    while let Ok(evt) = rx.recv().await {
+        let msg = json!({ "type": "event", "event": evt });
+        if socket.send(Message::Text(msg.to_string())).await.is_err() {
+            break;
+        }
+    }
+}
+
+async fn handle_ws_subscribe_history(mut socket: WebSocket, state: AppState) {
+    let history = tokio::task::spawn_blocking({
+        let st = state.clone();
+        move || db::list_history(&st.core, &st.queries)
+    })
+    .await;
+
+    if let Ok(Ok(entries)) = history {
+        let resp = json!({ "type": "snapshot", "history": entries });
+        let _ = socket.send(Message::Text(resp.to_string())).await;
+        let _ = state.events_tx.send(ServerEvent::ActiveWorkspaceHistoryLoaded {
+            count: entries.len(),
+        });
+    }
+
+    let mut rx = state.events_tx.subscribe();
+    while let Ok(evt) = rx.recv().await {
+        let msg = json!({ "type": "event", "event": evt });
+        if socket.send(Message::Text(msg.to_string())).await.is_err() {
+            break;
+        }
+    }
+}
+
+/// `bookmark` is now always a real collection name, taken directly from
+/// the path — no more "active" alias to resolve, and no more gate to
+/// check, since bookmarking into a named collection never requires
+/// anything to be "loaded" first (2026-09-22).
+async fn handle_ws_add_from_history(mut socket: WebSocket, state: AppState, bookmark: String) {
+    while let Some(Ok(msg)) = socket.recv().await {
+        let text = match msg {
+            Message::Text(t) => t,
+            _ => continue,
+        };
+
+        let endpoint_id = match serde_json::from_str::<Value>(&text) {
+            Ok(v) => v["endpoint_id"].as_str().unwrap_or("").to_string(),
+            Err(_) => text.trim().to_string(),
+        };
+
+        let res = tokio::task::spawn_blocking({
+            let st = state.clone();
+            let eid = endpoint_id.clone();
+            let folder = bookmark.clone();
+            move || db::insert_bookmark(&st.core, &st.queries, &eid, &folder, None)
+        })
+        .await;
+
+        match res {
+            Ok(Ok(_)) => {
+                let count = tokio::task::spawn_blocking({
+                    let st = state.clone();
+                    let folder = bookmark.clone();
+                    move || db::bookmarks_count(&st.core, &st.queries, &folder)
+                })
+                .await
+                .unwrap_or(Ok(0))
+                .unwrap_or(0);
+
+                state.refresh_dashboard_snapshot();
+                state
+                    .emit(ServerEvent::BookmarksUpdated { collection: bookmark.clone(), count })
+                    .await;
+                let resp = json!({ "type": "ok", "bookmark_count": count });
+                let _ = socket.send(Message::Text(resp.to_string())).await;
+            }
+            _ => {
+                let resp = json!({ "type": "error", "message": "failed to add to bookmark" });
+                let _ = socket.send(Message::Text(resp.to_string())).await;
+            }
+        }
+    }
+}
+
+async fn handle_ws_delete_from_bookmark(mut socket: WebSocket, state: AppState, bookmark: String) {
+    while let Some(Ok(msg)) = socket.recv().await {
+        let text = match msg {
+            Message::Text(t) => t,
+            _ => continue,
+        };
+
+        let endpoint_id = match serde_json::from_str::<Value>(&text) {
+            Ok(v) => v["endpoint_id"].as_str().unwrap_or("").to_string(),
+            Err(_) => text.trim().to_string(),
+        };
+
+        let res = tokio::task::spawn_blocking({
+            let st = state.clone();
+            let eid = endpoint_id.clone();
+            let folder = bookmark.clone();
+            move || db::delete_bookmark(&st.core, &st.queries, &eid, &folder)
+        })
+        .await;
+
+        match res {
+            Ok(Ok(_)) => {
+                let count = tokio::task::spawn_blocking({
+                    let st = state.clone();
+                    let folder = bookmark.clone();
+                    move || db::bookmarks_count(&st.core, &st.queries, &folder)
+                })
+                .await
+                .unwrap_or(Ok(0))
+                .unwrap_or(0);
+
+                state.refresh_dashboard_snapshot();
+                state
+                    .emit(ServerEvent::BookmarksUpdated { collection: bookmark.clone(), count })
+                    .await;
+                let resp = json!({ "type": "ok", "bookmark_count": count });
+                let _ = socket.send(Message::Text(resp.to_string())).await;
+            }
+            _ => {
+                let resp = json!({ "type": "error", "message": "failed to delete from bookmark" });
+                let _ = socket.send(Message::Text(resp.to_string())).await;
+            }
+        }
+    }
+}
+
+// ── Fetch a saved request/response body ─────────────────────────────────
+//
+// TestFinished only carries status_code/response_time_ms/response_file — a
+// server-side path, not the actual content. These routes are the missing
+// second half of the WS-trigger-then-REST-fetch pattern: the client uses
+// endpoint_id + request_number (already known from TestFinished) to pull
+// the real body. Deliberately NOT taking a raw path from the client —
+// that would be a path-traversal risk. The server builds the path itself,
+// the same way test_view.rs/callback.rs already do when writing it.
+
+fn safe_id(id: &str) -> Result<(), (StatusCode, Json<serde_json::Value>)> {
+    if id.is_empty() || id.contains("..") || id.contains('/') || id.contains('\\') {
+        return Err((
+            StatusCode::BAD_REQUEST,
+            Json(json!({ "ok": false, "error": "invalid endpoint_id" })),
+        ));
+    }
+    Ok(())
+}
+
+async fn read_saved_file(
+    state: &AppState,
+    endpoint_id: &str,
+    request_number: i64,
+    kind: &str,
+) -> (StatusCode, Json<serde_json::Value>) {
+    if let Err(e) = safe_id(endpoint_id) {
+        return e;
+    }
+    let path = state
+        .endpoint_storage_dir(endpoint_id)
+        .join(format!("{endpoint_id}-{kind}-{request_number}.json"));
+    match tokio::fs::read_to_string(&path).await {
+        Ok(content) => {
+            let body: serde_json::Value =
+                serde_json::from_str(&content).unwrap_or(serde_json::Value::String(content));
+            (StatusCode::OK, Json(json!({ "ok": true, "body": body })))
+        }
+        Err(e) => (
+            StatusCode::NOT_FOUND,
+            Json(json!({ "ok": false, "error": format!("no saved {kind} for {endpoint_id}#{request_number}: {e}") })),
+        ),
+    }
+}
+
+/// GET /test-view/{endpoint_id}/request/{request_number}
+pub async fn get_saved_request(
+    State(state): State<AppState>,
+    Path((endpoint_id, request_number)): Path<(String, i64)>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    read_saved_file(&state, &endpoint_id, request_number, "request").await
+}
+
+/// GET /test-view/{endpoint_id}/response/{request_number}
+pub async fn get_saved_response(
+    State(state): State<AppState>,
+    Path((endpoint_id, request_number)): Path<(String, i64)>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    read_saved_file(&state, &endpoint_id, request_number, "response").await
+}
+
+/// GET /test-view/{endpoint_id}/headers/{request_number}
+/// Body is {"request_headers": {...}, "response_headers": {...}}.
+pub async fn get_saved_headers(
+    State(state): State<AppState>,
+    Path((endpoint_id, request_number)): Path<(String, i64)>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    read_saved_file(&state, &endpoint_id, request_number, "headers").await
+}
+
+// ── QP list / delete ─────────────────────────────────────────────────
+//
+// A "QP" (request/response pair) is one test run against an endpoint —
+// already persisted automatically in request_metadata/response_metadata +
+// the three saved JSON files whenever a test runs (see run_test_impl
+// above). These two routes are the missing "access all of them" / "get
+// rid of one" pieces — everything else about a QP already existed.
+
+/// GET /test-view/{endpoint_id}/qps
+/// Lists every QP pair saved for this endpoint, oldest first.
+pub async fn list_qps(
+    State(state): State<AppState>,
+    Path(endpoint_id): Path<String>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    if let Err(e) = safe_id(&endpoint_id) {
+        return e;
+    }
+
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        move || db::list_qps_for_endpoint(&st.core, &st.queries, &eid)
+    })
+    .await;
+
+    match res {
+        Ok(Ok(qps)) => (StatusCode::OK, Json(json!({ "ok": true, "qps": qps }))),
+        Ok(Err(e)) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("{e:?}") })),
+        ),
+    }
+}
+
+/// POST /test-view/{endpoint_id}/qps/{request_number}/delete
+/// Deletes one QP pair's metadata rows and its three saved JSON files
+/// (request/response/headers). 404 if no such pair exists.
+pub async fn delete_qp(
+    State(state): State<AppState>,
+    Path((endpoint_id, request_number)): Path<(String, i32)>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    if let Err(e) = safe_id(&endpoint_id) {
+        return e;
+    }
+
+    let res = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        move || db::delete_qp(&st.core, &st.queries, &eid, request_number)
+    })
+    .await;
+
+    let rows_affected = match res {
+        Ok(Ok(n)) => n,
+        Ok(Err(e)) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+        Err(e) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+    };
+
+    if rows_affected == 0 {
+        return (
+            StatusCode::NOT_FOUND,
+            Json(json!({ "ok": false, "error": format!("no QP pair {endpoint_id}#{request_number}") })),
+        );
+    }
+
+    // QP DB Reassignment after deletion (PID task)
+    // Run SYNCHRONOUSLY (blocking) before emitting QpDeleted so the UI
+    // gets the event only AFTER the DB is already renumbered.
+    // Without this, the UI refreshes on QpDeleted and sees old numbers,
+    // forcing the user to manually refresh to see 1,2,3.
+    {
+        let st2 = state.clone();
+        let eid2 = endpoint_id.clone();
+        let storage_dir = state.endpoint_storage_dir(&endpoint_id)
+            .to_string_lossy()
+            .to_string();
+        let _ = tokio::task::spawn_blocking(move || {
+            db::reassign_qp_numbers(&st2.core, &eid2, &storage_dir)
+        })
+        .await; // await = synchronous from handler's perspective
+    }
+
+    // Best-effort: the metadata rows are the source of truth this route
+    // deletes by, so a file that's already missing isn't an error.
+    let dir = state.endpoint_storage_dir(&endpoint_id);
+    for kind in ["request", "response", "headers"] {
+        let path = dir.join(format!("{endpoint_id}-{kind}-{request_number}.json"));
+        let _ = tokio::fs::remove_file(path).await;
+    }
+
+    // QP Reassignment after deletion (PID task -- QPs out of order fix)
+    // After removing a QP, remaining numbers may have gaps (e.g. 1,2,5).
+    // Re-number them sequentially (1,2,3) so the UI always shows a clean list.
+    // Spawned as blocking task -- best-effort, does not block the HTTP response.
+    {
+        let eid_clone = endpoint_id.clone();
+        let dir_clone = dir.clone();
+        tokio::task::spawn_blocking(move || {
+            reassign_qp_files_inline(&dir_clone, &eid_clone);
+        });
+    }
+
+    state
+        .emit(ServerEvent::QpDeleted {
+            endpoint_id,
+            request_number,
+        })
+        .await;
+
+    (StatusCode::OK, Json(json!({ "ok": true })))
+}
+
+// ── QP manual create / update (no real HTTP test) ───────────────────
+//
+// Per Shivanshu's spec (2026-09-29): the frontend needs to create and edit
+// QP pairs by hand, not just by running a real test. Both routes write the
+// saved JSON files directly and skip ipc::spawn_child/run_test entirely —
+// there's no real request to send and no real response to wait for.
+
+/// Parses a QP body string as JSON, falling back to a plain JSON string if
+/// it isn't valid JSON — matches how read_saved_file already renders a
+/// saved file back to the caller, so a round-trip through update/create
+/// reads back the same shape either way.
+fn parse_qp_body(raw: &str) -> Value {
+    serde_json::from_str(raw).unwrap_or_else(|_| Value::String(raw.to_string()))
+}
+
+#[derive(Debug, Deserialize)]
+pub struct UpdateQpRequest {
+    pub request_body: String,
+    pub response_body: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CreateQpRequest {
+    pub method: String,
+    pub request_body: String,
+    pub response_body: String,
+}
+
+/// POST /test-view/{endpoint_id}/qps/{request_number}/update
+///
+/// Overwrites an existing QP's request/response files in place. Leaves
+/// status_code/response_time_ms and the headers file untouched — the user
+/// only edited the bodies, not the outcome of a test that already ran.
+pub async fn update_qp(
+    State(state): State<AppState>,
+    Path((endpoint_id, request_number)): Path<(String, i32)>,
+    Json(payload): Json<UpdateQpRequest>,
+) -> (StatusCode, Json<Value>) {
+    if let Err(e) = safe_id(&endpoint_id) {
+        return e;
+    }
+
+    let exists = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        move || db::qp_exists(&st.core, &st.queries, &eid, request_number)
+    })
+    .await;
+
+    match exists {
+        Ok(Ok(true)) => {}
+        Ok(Ok(false)) => {
+            return (
+                StatusCode::NOT_FOUND,
+                Json(json!({ "ok": false, "error": format!("no QP pair {endpoint_id}#{request_number}") })),
+            )
+        }
+        Ok(Err(e)) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+        Err(e) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": e.to_string() })),
+            )
+        }
+    }
+
+    let dir = state.endpoint_storage_dir(&endpoint_id);
+    let request_path = dir.join(format!("{endpoint_id}-request-{request_number}.json"));
+    let response_path = dir.join(format!("{endpoint_id}-response-{request_number}.json"));
+
+    if let Err(e) = tokio::fs::write(&request_path, parse_qp_body(&payload.request_body).to_string()).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to write request file: {e}") })),
+        );
+    }
+    if let Err(e) = tokio::fs::write(&response_path, parse_qp_body(&payload.response_body).to_string()).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to write response file: {e}") })),
+        );
+    }
+
+    state
+        .emit(ServerEvent::QpUpdated {
+            endpoint_id,
+            request_number,
+        })
+        .await;
+
+    (StatusCode::OK, Json(json!({ "ok": true })))
+}
+
+/// POST /test-view/{endpoint_id}/qps/create
+///
+/// Creates a brand-new QP without running a real HTTP test — the request
+/// and response bodies come straight from the caller. status_code and
+/// response_time_ms are left NULL (no real response happened), and a real
+/// but empty headers file is written so GET .../headers/{n} doesn't 404
+/// for a manually created pair.
+pub async fn create_qp(
+    State(state): State<AppState>,
+    Path(endpoint_id): Path<String>,
+    Json(payload): Json<CreateQpRequest>,
+) -> (StatusCode, Json<Value>) {
+    if let Err(e) = safe_id(&endpoint_id) {
+        return e;
+    }
+
+    let endpoint = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        move || db::get_endpoint(&st.core, &st.queries, &eid)
+    })
+    .await;
+
+    match endpoint {
+        Ok(Ok(Some(_))) => {}
+        Ok(Ok(None)) => {
+            return (
+                StatusCode::NOT_FOUND,
+                Json(json!({ "ok": false, "error": format!("no endpoint {endpoint_id}") })),
+            )
+        }
+        Ok(Err(e)) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+        Err(e) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": e.to_string() })),
+            )
+        }
+    }
+
+    let method = payload.method.to_uppercase();
+
+    let request_number = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        move || db::get_next_request_number(&st.core, &st.queries, &eid)
+    })
+    .await;
+    let request_number = match request_number {
+        Ok(Ok(n)) => n,
+        Ok(Err(e)) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+        Err(e) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": e.to_string() })),
+            )
+        }
+    };
+
+    let dir = state.endpoint_storage_dir(&endpoint_id);
+    let request_path = dir.join(format!("{endpoint_id}-request-{request_number}.json"));
+    let response_path = dir.join(format!("{endpoint_id}-response-{request_number}.json"));
+    let headers_path = dir.join(format!("{endpoint_id}-headers-{request_number}.json"));
+
+    if let Err(e) = tokio::fs::create_dir_all(&dir).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to create storage dir: {e}") })),
+        );
+    }
+    if let Err(e) = tokio::fs::write(&request_path, parse_qp_body(&payload.request_body).to_string()).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to write request file: {e}") })),
+        );
+    }
+    if let Err(e) = tokio::fs::write(&response_path, parse_qp_body(&payload.response_body).to_string()).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to write response file: {e}") })),
+        );
+    }
+    let headers_json = json!({ "request_headers": {}, "response_headers": {} });
+    if let Err(e) = tokio::fs::write(&headers_path, headers_json.to_string()).await {
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({ "ok": false, "error": format!("failed to write headers file: {e}") })),
+        );
+    }
+
+    let insert_result = tokio::task::spawn_blocking({
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        let rf = request_path.display().to_string();
+        let resf = response_path.display().to_string();
+        let m = method.clone();
+        move || -> edms::error::EdmsResult<()> {
+            db::insert_request_metadata(&st.core, &st.queries, &eid, request_number, &rf, &m)?;
+            db::insert_response_metadata(&st.core, &st.queries, &eid, request_number, &resf, None, None)?;
+            Ok(())
+        }
+    })
+    .await;
+
+    match insert_result {
+        Ok(Ok(())) => {}
+        Ok(Err(e)) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": format!("{e:?}") })),
+            )
+        }
+        Err(e) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "ok": false, "error": e.to_string() })),
+            )
+        }
+    }
+
+    state
+        .emit(ServerEvent::QpCreated {
+            endpoint_id,
+            request_number,
+        })
+        .await;
+
+    (StatusCode::OK, Json(json!({ "ok": true, "request_number": request_number })))
+}
+
+// =============================================================================
+// QP file reassignment helper  (PID task -- QPs out of order fix)
+//
+// Lives here (webserver) not in compute/endpoint_writer because delete_qp
+// is a webserver handler and the rename is pure filesystem work --
+// no IPC round-trip to compute needed.
+//
+// File naming convention (Ravi 2026-08-25):
+//   {eid}-request-{N}.json
+//   {eid}-response-{N}.json
+//   {eid}-headers-{N}.json
+//
+// Algorithm:
+//   1. Scan folder for {eid}-request-{N}.json -> collect N values
+//   2. Sort N ascending
+//   3. Rename each triple (request+response+headers) to sequential index
+// =============================================================================
+fn reassign_qp_files_inline(folder: &std::path::Path, eid: &str) {
+    let prefix = format!("{}-request-", eid);
+    let suffix = ".json";
+    let mut numbers: Vec<usize> = Vec::new();
+
+    let entries = match std::fs::read_dir(folder) {
+        Ok(e) => e,
+        Err(_) => return,
+    };
+
+    for entry in entries.flatten() {
+        let name = entry.file_name();
+        let name = name.to_string_lossy();
+        if name.starts_with(prefix.as_str()) && name.ends_with(suffix) {
+            let mid = &name[prefix.len()..name.len() - suffix.len()];
+            if let Ok(n) = mid.parse::<usize>() {
+                numbers.push(n);
+            }
+        }
+    }
+
+    numbers.sort_unstable();
+
+    for (zero_idx, old_n) in numbers.into_iter().enumerate() {
+        let new_n = zero_idx + 1;
+        if old_n == new_n {
+            continue;
+        }
+        for kind in ["request", "response", "headers"] {
+            let old_path = folder.join(format!("{}-{}-{}.json", eid, kind, old_n));
+            let new_path = folder.join(format!("{}-{}-{}.json", eid, kind, new_n));
+            if old_path.exists() {
+                let _ = std::fs::rename(&old_path, &new_path);
+                tracing::info!(
+                    "[QP REASSIGN] {eid}: {kind}-{old_n} -> {kind}-{new_n}"
+                );
+            }
+        }
+    }
+}

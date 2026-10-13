@@ -1,0 +1,13 @@
+{
+  "eid": "EID-090",
+  "count": 4,
+  "qpPairs": 5,
+  "annotation": "reports API endpoint used for stats",
+  "method": "GET",
+  "path": "/api/details/auth/stats",
+  "tags": [
+    "inventory",
+    "reports"
+  ],
+  "status": "deprecated"
+}

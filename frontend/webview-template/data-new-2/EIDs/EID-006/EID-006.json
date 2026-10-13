@@ -1,0 +1,14 @@
+{
+  "eid": "EID-006",
+  "count": 1,
+  "qpPairs": 5,
+  "annotation": "products support endpoint request processing",
+  "method": "GET",
+  "path": "/api/v2/products/history/billing/status",
+  "tags": [
+    "support",
+    "users",
+    "analytics"
+  ],
+  "status": "deprecated"
+}

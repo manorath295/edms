@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-026-response2",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "status_code": 500,
+    "content_type": "application/xml",
+    "response_size": "10 KB",
+    "response_time": "124 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 500,
+    "message": "Internal server error",
+    "data": {
+      "user_id": 192,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "user",
+      "created_at": "2025-03-05T06:04:30Z"
+    }
+  }
+}

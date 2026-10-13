@@ -1,0 +1,14 @@
+{
+  "eid": "EID-072",
+  "count": 4,
+  "qpPairs": 3,
+  "annotation": "products users endpoint handling request operations",
+  "method": "GET",
+  "path": "/api/update/users",
+  "tags": [
+    "analytics",
+    "products",
+    "system"
+  ],
+  "status": "deprecated"
+}

@@ -1,0 +1,12 @@
+{
+  "endpoint_id": "EID-036",
+  "request_id": "EID-036-request3",
+  "response_id": "EID-036-response3",
+  "request_headers": {
+    "Authorization": "Bearer sample_token",
+    "Content-Type": "application/json"
+  },
+  "response_headers": {
+    "Content-Type": "application/json"
+  }
+}

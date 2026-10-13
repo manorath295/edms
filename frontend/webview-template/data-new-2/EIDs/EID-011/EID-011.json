@@ -1,0 +1,13 @@
+{
+  "eid": "EID-011",
+  "count": 2,
+  "qpPairs": 4,
+  "annotation": "inventory API endpoint used for notifications",
+  "method": "PATCH",
+  "path": "/api/v1/list/notifications",
+  "tags": [
+    "billing",
+    "inventory"
+  ],
+  "status": "deprecated"
+}

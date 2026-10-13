@@ -1,0 +1,14 @@
+{
+  "eid": "EID-051",
+  "count": 2,
+  "qpPairs": 5,
+  "annotation": "users API endpoint used for notifications",
+  "method": "GET",
+  "path": "/api/v1/notifications/reports/list",
+  "tags": [
+    "orders",
+    "products",
+    "users"
+  ],
+  "status": "inactive"
+}

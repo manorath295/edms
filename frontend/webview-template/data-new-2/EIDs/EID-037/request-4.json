@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-037-request4",
+  "endpoint_id": "EID-037",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "3 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "high",
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com"
+    }
+  }
+}

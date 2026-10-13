@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-026-response5",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "application/json",
+    "response_size": "12 KB",
+    "response_time": "554 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 8955,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "manager",
+      "created_at": "2025-02-19T05:22:09Z"
+    }
+  }
+}

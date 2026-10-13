@@ -1,0 +1,15 @@
+{
+  "eid": "EID-023",
+  "count": 3,
+  "qpPairs": 1,
+  "annotation": "auth API endpoint used for stats",
+  "method": "GET",
+  "path": "/api/v2/update/stats",
+  "tags": [
+    "auth",
+    "notifications",
+    "system",
+    "analytics"
+  ],
+  "status": "inactive"
+}

@@ -1,0 +1,12 @@
+{
+  "eid": "EID-077",
+  "count": 2,
+  "qpPairs": 2,
+  "annotation": "stats admin endpoint request processing",
+  "method": "PUT",
+  "path": "/api/orders/users/products/stats",
+  "tags": [
+    "admin"
+  ],
+  "status": "deprecated"
+}

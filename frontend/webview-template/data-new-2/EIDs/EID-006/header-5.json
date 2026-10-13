@@ -1,0 +1,12 @@
+{
+  "endpoint_id": "EID-006",
+  "request_id": "EID-006-request5",
+  "response_id": "EID-006-response5",
+  "request_headers": {
+    "Authorization": "Bearer sample_token",
+    "Content-Type": "application/xml"
+  },
+  "response_headers": {
+    "Content-Type": "application/xml"
+  }
+}

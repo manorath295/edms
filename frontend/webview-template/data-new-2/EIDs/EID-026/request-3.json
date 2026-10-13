@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-026-request3",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "2 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "list_notifications",
+      "priority": "medium",
+      "username": "john_doe",
+      "email": "john_doe@example.com"
+    }
+  }
+}

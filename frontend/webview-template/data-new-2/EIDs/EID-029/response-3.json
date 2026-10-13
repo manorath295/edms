@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-029-response3",
+  "endpoint_id": "EID-029",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "application/xml",
+    "response_size": "9 KB",
+    "response_time": "812 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 4639,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "manager",
+      "created_at": "2025-09-14T15:30:41Z"
+    }
+  }
+}

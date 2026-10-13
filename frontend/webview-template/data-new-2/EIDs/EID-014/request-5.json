@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-014-request5",
+  "endpoint_id": "EID-014",
+  "meta_data": {
+    "method": "PATCH",
+    "content_type": "text/plain",
+    "authorization": "API Key",
+    "request_size": "4 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "delete_record",
+      "priority": "high",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

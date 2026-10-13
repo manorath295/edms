@@ -1,0 +1,14 @@
+{
+  "eid": "EID-001",
+  "count": 4,
+  "qpPairs": 2,
+  "annotation": "analytics API endpoint used for admin",
+  "method": "DELETE",
+  "path": "/api/list/users/admin",
+  "tags": [
+    "support",
+    "analytics",
+    "reports"
+  ],
+  "status": "inactive"
+}

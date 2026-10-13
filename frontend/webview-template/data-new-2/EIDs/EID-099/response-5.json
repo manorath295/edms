@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-099-response5",
+  "endpoint_id": "EID-099",
+  "meta_data": {
+    "status_code": 204,
+    "content_type": "application/xml",
+    "response_size": "7 KB",
+    "response_time": "220 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 204,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 859,
+      "username": "alice_smith",
+      "email": "alice_smith@example.com",
+      "role": "manager",
+      "created_at": "2025-04-02T08:47:53Z"
+    }
+  }
+}

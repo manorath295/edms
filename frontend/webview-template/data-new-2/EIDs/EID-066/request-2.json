@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-066-request2",
+  "endpoint_id": "EID-066",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "application/json",
+    "authorization": "API Key",
+    "request_size": "2 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "application/json"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "low",
+      "username": "jane_doe",
+      "email": "jane_doe@example.com"
+    }
+  }
+}

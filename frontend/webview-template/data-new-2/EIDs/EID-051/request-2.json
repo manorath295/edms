@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-051-request2",
+  "endpoint_id": "EID-051",
+  "meta_data": {
+    "method": "GET",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "10 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "update_profile",
+      "priority": "medium",
+      "username": "alex_wilson",
+      "email": "alex_wilson@example.com"
+    }
+  }
+}

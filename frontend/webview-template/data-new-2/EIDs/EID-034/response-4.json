@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-034-response4",
+  "endpoint_id": "EID-034",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "text/plain",
+    "response_size": "14 KB",
+    "response_time": "719 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 9723,
+      "username": "jane_doe",
+      "email": "jane_doe@example.com",
+      "role": "support",
+      "created_at": "2026-01-04T01:14:30Z"
+    }
+  }
+}

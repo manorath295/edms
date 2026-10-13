@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-026-request1",
+  "endpoint_id": "EID-026",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "check_status",
+      "priority": "high",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

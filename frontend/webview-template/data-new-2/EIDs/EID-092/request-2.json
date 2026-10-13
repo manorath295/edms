@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-092-request2",
+  "endpoint_id": "EID-092",
+  "meta_data": {
+    "method": "POST",
+    "content_type": "text/plain",
+    "authorization": "Basic Auth",
+    "request_size": "1 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "generate_report",
+      "priority": "medium",
+      "username": "rohit_kumar",
+      "email": "rohit_kumar@example.com"
+    }
+  }
+}

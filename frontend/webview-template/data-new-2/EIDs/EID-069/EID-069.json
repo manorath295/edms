@@ -1,0 +1,13 @@
+{
+  "eid": "EID-069",
+  "count": 1,
+  "qpPairs": 1,
+  "annotation": "inventory endpoint for logout operations",
+  "method": "DELETE",
+  "path": "/api/v1/analytics/system/status/logout",
+  "tags": [
+    "inventory",
+    "support"
+  ],
+  "status": "inactive"
+}

@@ -1,0 +1,15 @@
+{
+  "eid": "EID-027",
+  "count": 4,
+  "qpPairs": 2,
+  "annotation": "system products endpoint handling request operations",
+  "method": "PUT",
+  "path": "/api/v1/delete/products",
+  "tags": [
+    "system",
+    "billing",
+    "notifications",
+    "reports"
+  ],
+  "status": "deprecated"
+}

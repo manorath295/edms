@@ -1,0 +1,15 @@
+{
+  "eid": "EID-039",
+  "count": 4,
+  "qpPairs": 4,
+  "annotation": "notifications API endpoint used for create",
+  "method": "PUT",
+  "path": "/api/v1/create/summary/status",
+  "tags": [
+    "system",
+    "notifications",
+    "orders",
+    "auth"
+  ],
+  "status": "active"
+}

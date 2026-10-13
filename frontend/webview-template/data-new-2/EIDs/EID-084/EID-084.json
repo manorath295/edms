@@ -1,0 +1,12 @@
+{
+  "eid": "EID-084",
+  "count": 3,
+  "qpPairs": 3,
+  "annotation": "system auth endpoint handling request operations",
+  "method": "POST",
+  "path": "/api/v1/summary/auth/system/billing",
+  "tags": [
+    "system"
+  ],
+  "status": "deprecated"
+}

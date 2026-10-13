@@ -1,0 +1,22 @@
+{
+  "request_id": "EID-100-request3",
+  "endpoint_id": "EID-100",
+  "meta_data": {
+    "method": "DELETE",
+    "content_type": "text/plain",
+    "authorization": "Bearer Token",
+    "request_size": "6 KB"
+  },
+  "body": {
+    "headers": {
+      "Authorization": "Bearer sample_token",
+      "Content-Type": "text/plain"
+    },
+    "data": {
+      "task": "create_user",
+      "priority": "low",
+      "username": "emma_brown",
+      "email": "emma_brown@example.com"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "eid": "EID-016",
+  "count": 1,
+  "qpPairs": 5,
+  "annotation": "system API endpoint used for auth",
+  "method": "POST",
+  "path": "/api/v1/login/auth/admin",
+  "tags": [
+    "system",
+    "reports"
+  ],
+  "status": "active"
+}

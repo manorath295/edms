@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-059-response3",
+  "endpoint_id": "EID-059",
+  "meta_data": {
+    "status_code": 202,
+    "content_type": "application/json",
+    "response_size": "1 KB",
+    "response_time": "564 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 202,
+    "message": "Resource updated successfully",
+    "data": {
+      "user_id": 9607,
+      "username": "rahul_sharma",
+      "email": "rahul_sharma@example.com",
+      "role": "admin",
+      "created_at": "2025-10-05T08:24:21Z"
+    }
+  }
+}

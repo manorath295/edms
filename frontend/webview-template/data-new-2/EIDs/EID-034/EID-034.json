@@ -1,0 +1,12 @@
+{
+  "eid": "EID-034",
+  "count": 1,
+  "qpPairs": 4,
+  "annotation": "users API endpoint used for billing",
+  "method": "PATCH",
+  "path": "/api/v2/update/create/billing/inventory",
+  "tags": [
+    "users"
+  ],
+  "status": "deprecated"
+}

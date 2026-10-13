@@ -1,0 +1,13 @@
+{
+  "eid": "EID-030",
+  "count": 1,
+  "qpPairs": 2,
+  "annotation": "products history endpoint handling request operations",
+  "method": "GET",
+  "path": "/api/profile/history/reports",
+  "tags": [
+    "products",
+    "system"
+  ],
+  "status": "deprecated"
+}

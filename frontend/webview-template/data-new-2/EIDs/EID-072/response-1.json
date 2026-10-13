@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-072-response1",
+  "endpoint_id": "EID-072",
+  "meta_data": {
+    "status_code": 200,
+    "content_type": "application/xml",
+    "response_size": "5 KB",
+    "response_time": "473 ms"
+  },
+  "body": {
+    "status": "success",
+    "code": 200,
+    "message": "Operation completed successfully",
+    "data": {
+      "user_id": 1113,
+      "username": "shivam_verma",
+      "email": "shivam_verma@example.com",
+      "role": "manager",
+      "created_at": "2026-10-25T07:35:20Z"
+    }
+  }
+}

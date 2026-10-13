@@ -1,0 +1,14 @@
+{
+  "eid": "EID-064",
+  "count": 3,
+  "qpPairs": 5,
+  "annotation": "users endpoint for support operations",
+  "method": "DELETE",
+  "path": "/api/orders/support/history",
+  "tags": [
+    "system",
+    "users",
+    "support"
+  ],
+  "status": "deprecated"
+}

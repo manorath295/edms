@@ -1,0 +1,22 @@
+{
+  "response_id": "EID-068-response1",
+  "endpoint_id": "EID-068",
+  "meta_data": {
+    "status_code": 401,
+    "content_type": "text/plain",
+    "response_size": "5 KB",
+    "response_time": "865 ms"
+  },
+  "body": {
+    "status": "error",
+    "code": 401,
+    "message": "Unauthorized request",
+    "data": {
+      "user_id": 4099,
+      "username": "john_doe",
+      "email": "john_doe@example.com",
+      "role": "user",
+      "created_at": "2025-04-27T14:55:23Z"
+    }
+  }
+}

@@ -78,7 +78,7 @@ pub fn init_dashboard_db(app_root: &Path) -> Result<Connection, Box<dyn std::err
         [],
     )?;
 
-    // Holds the latest CRUD Operations breakdown (Ravi's [1] approach —
+    // Holds the latest CRUD Operations breakdown ([1] approach —
     // global, refresh-triggered computation via a compute child process,
     // not a per-transaction update). Cleared and repopulated on every
     // refresh, so this only ever holds one "generation" of data at a time.
@@ -413,7 +413,7 @@ pub fn get_daily_snapshot(
         .optional()
 }
 
-/* ---------------- CRUD Operations (Ravi's global/refresh-triggered approach) ---------------- */
+/* ---------------- CRUD Operations (global/refresh-triggered approach) ---------------- */
 
 #[derive(Debug, Clone, Serialize)]
 pub struct CrudOperationsRow {

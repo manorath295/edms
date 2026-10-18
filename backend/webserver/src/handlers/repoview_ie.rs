@@ -1,4 +1,4 @@
-//! Import / Export ("takeout") for RepoViews - v1.0 (Ravi, 2026-10-05/06) -
+//! Import / Export ("takeout") for RepoViews - v1.0 -
 //! and, the same way, WebViews (`Flavor` says which; a WebView's folder also
 //! holds `front-page.json`, which travels with it).
 //!
@@ -6,19 +6,19 @@
 //! touched:
 //!
 //! - **Takeout** copies the EQP data of every listed endpoint out of
-//!   globalEQPData into `storage/takeout/{name}/`, next to the generated
-//!   Tables files, with the SQLite index *removed* - "friendly for git or
-//!   web". The existing `compute::table_view::takeout_item` does the copy of
-//!   the RepoView folder, the SQLite stripping and the name-collision check.
+//! globalEQPData into `storage/takeout/{name}/`, next to the generated
+//! Tables files, with the SQLite index *removed* - "friendly for git or
+//! web". The existing `compute::table_view::takeout_item` does the copy of
+//! the RepoView folder, the SQLite stripping and the name-collision check.
 //! - Because a takeout has no SQLite, it also carries
-//!   `repoview-manifest.json`: the RepoView's own details plus each
-//!   endpoint's URL, method, tags and QP status codes/timings. A real EQP
-//!   folder holds only request/response/header files, so without this an
-//!   import would have no way to rebuild the index.
+//! `repoview-manifest.json`: the RepoView's own details plus each
+//! endpoint's URL, method, tags and QP status codes/timings. A real EQP
+//! folder holds only request/response/header files, so without this an
+//! import would have no way to rebuild the index.
 //! - **Import** reads a takeout folder, gives every endpoint a *fresh* EID
-//!   ("IE always have their own unique EIDs even if the same endpoint exists
-//!   in a different EID"), renames the EQP files to match, writes the central
-//!   rows, and builds the RepoView's index.
+//! ("IE always have their own unique EIDs even if the same endpoint exists
+//! in a different EID"), renames the EQP files to match, writes the central
+//! rows, and builds the RepoView's index.
 
 use axum::{
     extract::{Path, State},
@@ -397,10 +397,10 @@ pub struct ImportRequest {
 ///
 /// It runs as a job in three parts, so the request returns at once:
 /// 1. here: validate, check the name, allocate the new EIDs, start the child
-///    -> `202 {job_id}`;
+/// -> `202 {job_id}`;
 /// 2. `edms-child` (`view_import_copy`): copy and rename the EQP files;
 /// 3. `finish_import`, when the child calls back: write the central rows,
-///    build the index and catalog row, then finish the job (`ViewIoDone`).
+/// build the index and catalog row, then finish the job (`ViewIoDone`).
 /// Endpoints that can't be imported are reported in the result's `skipped`;
 /// if none can, nothing is created.
 pub async fn import_repoview(

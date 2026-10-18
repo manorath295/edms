@@ -1,5 +1,4 @@
-//! RepoView and WebView are the same thing to the backend (Ravi, v1.0: "UI is
-//! 99% identical for both"): a list - a SQLite index of members plus
+//! RepoView and WebView are the same thing to the backend : a list - a SQLite index of members plus
 //! snapshots - with no EQP data, built from a Collection, combined, taken out
 //! and imported the same way. They differ in names (catalog table, folder,
 //! route prefix, row-tag table), in what else the folder holds (a RepoView

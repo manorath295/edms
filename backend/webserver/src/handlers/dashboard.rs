@@ -42,7 +42,7 @@ pub async fn get_dashboard_snapshot(
 /// application limits, stability/commit info, and external links — plus
 /// `storage_configured`/`storage_path`, computed at startup (not part of
 /// the config file itself), so the frontend can show a warning banner
-/// when the user hasn't configured `storage.root` yet (Ravi, 2026-09-14).
+/// when the user hasn't configured `storage.root` yet .
 pub async fn get_static_data(State(state): State<AppState>) -> (StatusCode, Json<serde_json::Value>) {
     let mut body = json!(state.config.as_ref());
     if let Some(obj) = body.as_object_mut() {
@@ -69,7 +69,7 @@ pub async fn get_dashboard_snapshot_history(
 }
 
 /// POST /dashboard/crud-operations/refresh
-/// Ravi's [1] approach — global, one-time processing via a compute child
+/// [1] approach — global, one-time processing via a compute child
 /// process, triggered only by this route (and app startup), never on a
 /// per-transaction basis. Fire-and-forget: result lands later via
 /// /internal/callback. This is what the dashboard's Refresh button hits.

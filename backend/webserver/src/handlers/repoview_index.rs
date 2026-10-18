@@ -1,5 +1,5 @@
 //! A RepoView's (and, the same way, a WebView's) own SQLite index - v1.0
-//! (Ravi, 2026-10-05/06). The route handlers here serve both: `Flavor` says
+//! . The route handlers here serve both: `Flavor` says
 //! which.
 //!
 //! A RepoView is a list, not a copy of the data: `repoview.sqlite` holds the
@@ -178,8 +178,7 @@ pub(crate) struct RepoviewStats {
     /// The distinct path pieces, sorted (the keys of `segment_frequency`).
     pub segments: Vec<String>,
     /// Each path piece and how many times it occurs across the list's
-    /// endpoints' URLs (Ravi, 2026-10-07: `/a/b/c` and `/z/a/c` give
-    /// a:2, b:1, c:2, z:1). Every occurrence counts, so `/a/a` is two.
+    /// endpoints' URLs . Every occurrence counts, so `/a/a` is two.
     pub segment_frequency: BTreeMap<String, usize>,
     pub index_lists: usize,
 }
@@ -471,9 +470,9 @@ impl From<String> for ConvertError {
 /// POST /repoview/:name/convert-to-collection
 ///
 /// - `collection` doesn't exist: it's created and the RepoView's endpoints
-///   are added.
+/// are added.
 /// - `collection` exists and no `on_exists`: **409**, `{conflict: true,
-///   options: ["merge", "rename"]}` - the pop-up's warning. Nothing changes.
+/// options: ["merge", "rename"]}` - the pop-up's warning. Nothing changes.
 /// - `on_exists: "merge"`: the endpoints are added to the existing one.
 /// - `on_exists: "rename"` + `new_name`: a new Collection with that name.
 ///
@@ -690,7 +689,7 @@ mod tests {
     fn segments_come_with_how_often_each_occurs() {
         let dir = temp_dir("segfreq");
         let m = open(&dir);
-        // Ravi's example: /a/b/c and /z/a/c -> a:2, b:1, c:2, z:1
+        // example: /a/b/c and /z/a/c -> a:2, b:1, c:2, z:1
         add(&m, "E0001-AAA", "https://x.com/a/b/c", "GET", Some(1), 0, &[]);
         add(&m, "E0002-AAA", "https://x.com/z/a/c", "GET", Some(1), 0, &[]);
         let s = compute_stats(&m, &dir).unwrap();

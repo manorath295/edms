@@ -430,7 +430,7 @@ pub async fn mark_active_folder_handler(
 
 // ── CRUD OPERATIONS (dashboard) ────────────────────────────────────────────────
 //
-// Ravi's [1] approach: global, one-time processing spun up via a child
+// [1] approach: global, one-time processing spun up via a child
 // process, triggered by app launch or the dashboard's Refresh button — not
 // a per-transaction update. Scans a single edms.db for now; extending to
 // multiple per-folder sqlite files (once that data model exists) just means

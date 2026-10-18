@@ -1,5 +1,4 @@
-//! Combine RepoViews (and WebViews - `Flavor` says which) - the list-level tag op from the v1.0 notes (Ravi,
-//! 2026-10-05/06): "For both views, this operation simply combines data from
+//! Combine RepoViews (and WebViews - `Flavor` says which) - the list-level tag op from the v1.0 notes : "For both views, this operation simply combines data from
 //! two or more folders. Nothing comes from Collections."
 //!
 //! A RepoView is only an index, so combining is a merge of indexes: members,
@@ -235,12 +234,12 @@ impl From<String> for CombineError {
 ///
 /// Combines two or more RepoViews into one:
 /// - `name` doesn't exist: a new RepoView is created from at least two
-///   sources (to copy just one, use duplicate).
+/// sources (to copy just one, use duplicate).
 /// - `name` exists and no `on_exists`: **409** `{conflict:true,
-///   options:["merge","rename"]}`, nothing changes - the same choice as
-///   Convert to Collection.
+/// options:["merge","rename"]}`, nothing changes - the same choice as
+/// Convert to Collection.
 /// - `on_exists:"merge"`: the sources are merged into that RepoView, which is
-///   one of the folders being combined; rows it already has are left alone.
+/// one of the folders being combined; rows it already has are left alone.
 /// - `on_exists:"rename"` + `new_name`: a new RepoView with that name.
 ///
 /// The sources are never changed. The new RepoView's `source` lists the

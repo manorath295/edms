@@ -30,7 +30,7 @@ pub struct LinksConfig {
     pub wiki: String,
 }
 
-/// Per Ravi (2026-09-14): the EDMS data directory has one single point of
+/// 
 /// configuration, here — a relative path. The app does NOT create this
 /// top-level directory itself if it's missing; the user has to create it
 /// first. It must not resolve inside this repo or the `init/` folder.

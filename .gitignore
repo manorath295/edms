@@ -1,0 +1,39 @@
+# Rust build artifacts
+target/
+**/target/
+*.exe
+*.pdb
+*.o
+*.d
+*.dll
+*.so
+*.dylib
+*.rlib
+.rustc_info.json
+CACHEDIR.TAG
+.cargo-artifact-lock
+.cargo-build-lock
+.cargo-lock
+
+# SQLite Databases & Local Storage
+*.db
+*.sqlite
+*.sqlite3
+backend/edms_root/
+
+# Node / Frontend
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.next/
+**/out/
+
+# Environments & Logs
+.env
+.env.*
+*.log
+
+# System files
+.DS_Store
+Thumbs.db

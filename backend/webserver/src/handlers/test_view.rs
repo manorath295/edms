@@ -282,7 +282,7 @@ struct RunMessage {
     timeout_ms: u64,
     #[serde(default)]
     tick_interval_ms: u64,
-    /// Headers to send with this request — per Ravi (2026-09-04), the
+    /// Headers to send with this request — the
     /// third piece to capture alongside request/response.
     #[serde(default)]
     headers: std::collections::HashMap<String, String>,
@@ -354,7 +354,7 @@ async fn handle_ws_run(mut socket: WebSocket, state: AppState) {
 }
 
 // ═════════════════════════════════════════════════════════════════════
-//  run_test_impl
+// run_test_impl
 // ═════════════════════════════════════════════════════════════════════
 
 async fn run_test_impl(
@@ -368,9 +368,9 @@ async fn run_test_impl(
     timer_cfg: TimerConfig,
 ) -> Result<(), EdmsError> {
     // 1) Get-or-create the endpoint — per Mathew (2026-09-08), an endpoint
-    //    is only created the moment it's actually tested. Re-testing an
-    //    existing endpoint_id is the common case (returned as-is); a new
-    //    or omitted id creates a fresh row here.
+    // is only created the moment it's actually tested. Re-testing an
+    // existing endpoint_id is the common case (returned as-is); a new
+    // or omitted id creates a fresh row here.
     let (endpoint, was_created) = crate::handlers::endpoints::get_or_create_endpoint(
         state,
         endpoint_id,
@@ -421,7 +421,7 @@ async fn run_test_impl(
     .map_err(|_| EdmsError::UnknownError)?;
 
     // 4) Spawn edms-child to write the request file to disk
-    //    Result comes back via /internal/callback
+    // Result comes back via /internal/callback
     ipc::spawn_child(
         "write_request",
         json!({
@@ -440,8 +440,8 @@ async fn run_test_impl(
     });
 
     // 6) Start timer — keep the handle so callback.rs can cancel it once
-    //    the real outcome (success or timeout) is known, instead of letting
-    //    it tick on its own independent schedule.
+    // the real outcome (success or timeout) is known, instead of letting
+    // it tick on its own independent schedule.
     let timer_handle = timer::spawn_timer(
         endpoint_id.to_string(),
         request_number,
@@ -455,7 +455,7 @@ async fn run_test_impl(
         .insert((endpoint_id.to_string(), request_number), timer_handle);
 
     // 7) Spawn edms-child for the actual HTTP test call
-    //    This is the original run_test task — unchanged
+    // This is the original run_test task — unchanged
     ipc::spawn_child(
         "run_test",
         json!({
@@ -1061,6 +1061,30 @@ pub async fn create_qp(
     };
 
     let dir = state.endpoint_storage_dir(&endpoint_id);
+    let req_content = parse_qp_body(&payload.request_body).to_string();
+    let res_content = parse_qp_body(&payload.response_body).to_string();
+    let headers_json = json!({ "request_headers": {}, "response_headers": {} });
+    let hdr_content = headers_json.to_string();
+
+    // Duplicate E(Q,P,H) detection: reject if identical snapshot already exists
+    if let Some(dup_num) = crate::qp_service::find_duplicate_qp(
+        &dir,
+        &endpoint_id,
+        &req_content,
+        &res_content,
+        &hdr_content,
+        None,
+    ) {
+        return (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "ok": false,
+                "error": format!("Duplicate QP detected: an identical (Q, P, H) already exists as QP #{dup_num} for endpoint {endpoint_id}"),
+                "duplicate_of": dup_num,
+            })),
+        );
+    }
+
     let request_path = dir.join(format!("{endpoint_id}-request-{request_number}.json"));
     let response_path = dir.join(format!("{endpoint_id}-response-{request_number}.json"));
     let headers_path = dir.join(format!("{endpoint_id}-headers-{request_number}.json"));
@@ -1132,21 +1156,21 @@ pub async fn create_qp(
 }
 
 // =============================================================================
-// QP file reassignment helper  (PID task -- QPs out of order fix)
+// QP file reassignment helper (PID task -- QPs out of order fix)
 //
 // Lives here (webserver) not in compute/endpoint_writer because delete_qp
 // is a webserver handler and the rename is pure filesystem work --
 // no IPC round-trip to compute needed.
 //
-// File naming convention (Ravi 2026-08-25):
-//   {eid}-request-{N}.json
-//   {eid}-response-{N}.json
-//   {eid}-headers-{N}.json
+// File naming convention :
+// {eid}-request-{N}.json
+// {eid}-response-{N}.json
+// {eid}-headers-{N}.json
 //
 // Algorithm:
-//   1. Scan folder for {eid}-request-{N}.json -> collect N values
-//   2. Sort N ascending
-//   3. Rename each triple (request+response+headers) to sequential index
+// 1. Scan folder for {eid}-request-{N}.json -> collect N values
+// 2. Sort N ascending
+// 3. Rename each triple (request+response+headers) to sequential index
 // =============================================================================
 fn reassign_qp_files_inline(folder: &std::path::Path, eid: &str) {
     let prefix = format!("{}-request-", eid);

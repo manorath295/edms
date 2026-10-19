@@ -9,6 +9,7 @@ mod logging;
 mod jobs;
 mod state;
 mod timer;
+pub mod qp_service;
 
 use axum::{
     extract::DefaultBodyLimit,
@@ -117,17 +118,17 @@ fn list_view_routes(flavor: Flavor) -> Router<state::AppState> {
     router.layer(Extension(flavor))
 }
 
-/// Resolves the EDMS storage root, per Ravi (2026-09-14): one single point
+/// Resolves the EDMS storage root, 
 /// of configuration, a relative path, and the app never creates the
 /// top-level directory itself — the user has to. Priority:
 ///
 /// 1. `EDMS_ROOT` env var — an explicit override (this is what
-///    docker-compose sets); always trusted as-is, no existence/location
-///    checks, since it's already an explicit deployment decision.
+/// docker-compose sets); always trusted as-is, no existence/location
+/// checks, since it's already an explicit deployment decision.
 /// 2. `config.yaml`'s `storage.root` — a relative path, resolved against
-///    the process's working directory. Rejected (falls through to #3) if
-///    it resolves inside this repo or the `init/` folder, or if the
-///    directory doesn't exist yet.
+/// the process's working directory. Rejected (falls through to #3) if
+/// it resolves inside this repo or the `init/` folder, or if the
+/// directory doesn't exist yet.
 /// 3. Neither — the old walk-up default, flagged unconfigured.
 ///
 /// Returns `(root, configured)`. `configured = false` means: still
@@ -407,7 +408,7 @@ async fn main() -> anyhow::Result<()> {
     info!("Listening on http://{addr}");
     let listener = tokio::net::TcpListener::bind(addr).await?;
 
-    // CRUD Operations: global, one-time processing on launch (Ravi's [1]
+    // CRUD Operations: global, one-time processing on launch ([1]
     // approach) — spun up via the compute service, same as the Refresh
     // button. Fire-and-forget; result lands later via /internal/callback.
     // Spawned after the listener is bound so the child's callback POST has

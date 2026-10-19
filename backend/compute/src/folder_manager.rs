@@ -37,7 +37,7 @@ impl FolderLayout {
         vec!["repo", "session-backup", "active", "exports", "temp", "docs"]
     }
 
-    /// Folders per the Sept 1, 2026 storage schema (Ravi) — additive
+    /// Folders per the Sept 1, 2026 storage schema — additive
     /// alongside the legacy ones, not a replacement yet.
     fn new_schema_folders() -> Vec<&'static str> {
         vec![

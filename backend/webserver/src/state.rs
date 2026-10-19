@@ -23,7 +23,7 @@ pub struct AppState {
     /// directory that actually exists and isn't inside the repo/init/) —
     /// as opposed to the unconfigured fallback. Surfaced via
     /// `/dashboard/static` so the frontend can show the "parent directory
-    /// path not enabled" banner (Ravi, 2026-09-14).
+    /// path not enabled" banner .
     pub storage_configured: bool,
     pub started_at: String,
     pub config: Arc<AppConfig>,

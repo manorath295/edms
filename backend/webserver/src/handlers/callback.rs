@@ -125,6 +125,49 @@ async fn handle_run_test(state: &AppState, callback: &IpcCallback) {
     let status_code      = r["status_code"].as_i64().unwrap_or(0) as i32;
     let response_time_ms = r["response_time_ms"].as_i64().unwrap_or(0) as i32;
     let response_body    = r.get("response_body").cloned().unwrap_or(serde_json::Value::Null);
+
+    let request_headers  = r.get("request_headers").cloned().unwrap_or(serde_json::json!({}));
+    let response_headers = r.get("response_headers").cloned().unwrap_or(serde_json::json!({}));
+    let headers_content = serde_json::json!({
+        "request_headers":  request_headers,
+        "response_headers": response_headers,
+    });
+
+    let dir = state.endpoint_storage_dir(&endpoint_id);
+    let req_file_path = dir.join(format!("{endpoint_id}-request-{request_number}.json"));
+    let req_content = tokio::fs::read_to_string(&req_file_path).await.unwrap_or_default();
+    let res_content = serde_json::to_string(&response_body).unwrap_or_default();
+    let hdr_content = headers_content.to_string();
+
+    // Duplicate E(Q,P,H) check for live test runs
+    if let Some(dup_num) = crate::qp_service::find_duplicate_qp(
+        &dir,
+        &endpoint_id,
+        &req_content,
+        &res_content,
+        &hdr_content,
+        Some(request_number),
+    ) {
+        tracing::warn!(
+            "[handle_run_test] Duplicate QP detected for endpoint {endpoint_id}: identical to QP #{dup_num}. Discarding duplicate."
+        );
+        let _ = tokio::fs::remove_file(&req_file_path).await;
+        let st = state.clone();
+        let eid = endpoint_id.clone();
+        let _ = tokio::task::spawn_blocking(move || {
+            let rq = st.queries.get_request_query("R7").ok_or(edms::error::EdmsError::UnknownError)?;
+            st.core.proc(rq, &[&eid, &request_number])
+        }).await;
+
+        state.cancel_timer(&endpoint_id, request_number);
+        let _ = state.events_tx.send(ServerEvent::DuplicateQpBlocked {
+            endpoint_id,
+            request_number,
+            duplicate_of: dup_num,
+        });
+        return;
+    }
+
     // Must match the {eid}-response-{N}.json filename write_response_file
     // actually produces (compute::endpoint_writer) — see the matching note
     // on request_file in test_view.rs.
@@ -146,16 +189,7 @@ async fn handle_run_test(state: &AppState, callback: &IpcCallback) {
         3000,
     );
 
-    // Headers — per Ravi (2026-09-04). compute echoes back the request
-    // headers it actually sent alongside the response's own headers, so
-    // both land in one combined file without webserver needing to
-    // remember what it asked for earlier.
-    let request_headers  = r.get("request_headers").cloned().unwrap_or(serde_json::json!({}));
-    let response_headers = r.get("response_headers").cloned().unwrap_or(serde_json::json!({}));
-    let headers_content = serde_json::json!({
-        "request_headers":  request_headers,
-        "response_headers": response_headers,
-    });
+    // Spawn edms-child to write combined headers file
     crate::ipc::spawn_child(
         "write_headers",
         serde_json::json!({
@@ -193,11 +227,7 @@ async fn handle_run_test(state: &AppState, callback: &IpcCallback) {
         }
     }
 
-    // Record this QP pair in History automatically — per Ravi's email
-    // (2026-09-03), every completed test is auto-linked into History with
-    // no manual step; only promoting one into Bookmarks is a deliberate
-    // user action. POST /test-view/save/history remains available for
-    // anything that wants to log a history entry without a real test run.
+    // Record this QP pair in History automatically.
     let history_count = {
         let st = state.clone();
         let eid = endpoint_id.clone();

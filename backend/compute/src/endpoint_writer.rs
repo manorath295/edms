@@ -1,14 +1,14 @@
 // ── How to run the compute crate in Docker ───────────────────────────────────
 // From the repo root:
-//   docker build -t edms-compute -f backend/compute/Dockerfile .
-//   docker run --rm edms-compute
+// docker build -t edms-compute -f backend/compute/Dockerfile .
+// docker run --rm edms-compute
 //
 // Or run locally (no Docker):
-//   cd backend/compute
-//   cargo run --bin child
+// cd backend/compute
+// cargo run --bin child
 //
 // To run only the tests in this file:
-//   cargo test reassign_tests
+// cargo test reassign_tests
 // ─────────────────────────────────────────────────────────────────────────────
 
 use std::fs;
@@ -37,7 +37,7 @@ pub fn write_request_file<P: AsRef<Path>>(
     content: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     std::fs::create_dir_all(repo_path.as_ref())?;
-    // Matches the {eid}-request-{N}.json convention from Ravi's file layout
+    // Matches the {eid}-request-{N}.json convention from file layout
     // email (2026-08-25) — also what request_metadata.file_path expects
     // (see run_test_impl/handle_run_test in the webserver crate).
     let filename = format!("{}-request-{}.json", eid, req_index);
@@ -63,7 +63,7 @@ pub fn write_response_file<P: AsRef<Path>>(
     Ok(())
 }
 
-/// Per Ravi (2026-09-04): "write logic to capture headers, apply correct
+/// apply correct
 /// file name and write to the correct EID folder" — the third file per QP
 /// alongside request/response. `content` is expected to already be the
 /// combined {"request_headers":..., "response_headers":...} JSON string —
@@ -84,34 +84,34 @@ pub fn write_headers_file<P: AsRef<Path>>(
 }
 
 // =============================================================================
-// QP REASSIGNMENT AFTER DELETION  (PID task — QPs out of order fix)
+// QP REASSIGNMENT AFTER DELETION (PID task — QPs out of order fix)
 //
 // Problem: When a user deletes QPs (e.g. deletes QP 3 and 4), the remaining
 // files on disk have gaps in their numbers:
 //
-//     E0001-request-1.json
-//     E0001-request-2.json
-//     E0001-request-5.json   ← gap: 3 and 4 are missing
+// E0001-request-1.json
+// E0001-request-2.json
+// E0001-request-5.json   ← gap: 3 and 4 are missing
 //
 // This function fixes the gaps by renaming files to sequential numbers:
 //
-//     E0001-request-1.json   ← unchanged
-//     E0001-request-2.json   ← unchanged
-//     E0001-request-3.json   ← renamed from 5
+// E0001-request-1.json   ← unchanged
+// E0001-request-2.json   ← unchanged
+// E0001-request-3.json   ← renamed from 5
 //
 // Design decisions (from task spec):
-//   - SQLite stores count only, not sequence → NO SQLite changes needed
-//   - Frontend re-enumerates automatically on reopen → NO frontend changes
-//   - File names are trivially modified (just fs::rename), all at once
-//   - Q, P, H each have their own integer — we rename each file type separately
-//   - Applied to both globalEQPData/ and history/ folders (call twice)
+// - SQLite stores count only, not sequence → NO SQLite changes needed
+// - Frontend re-enumerates automatically on reopen → NO frontend changes
+// - File names are trivially modified (just fs::rename), all at once
+// - Q, P, H each have their own integer — we rename each file type separately
+// - Applied to both globalEQPData/ and history/ folders (call twice)
 // =============================================================================
 
 /// Reassigns QP file numbers after deletion so they are always sequential.
 ///
 /// # Arguments
 /// * `folder` - folder containing the QP files e.g. `storage/globalEQPData/E0001/`
-/// * `eid`    - the endpoint ID string e.g. `"E0001"`
+/// * `eid` - the endpoint ID string e.g. `"E0001"`
 ///
 /// # What it does
 /// 1. Scans folder for all files matching `{eid}-request-{N}.json`
@@ -122,7 +122,7 @@ pub fn write_headers_file<P: AsRef<Path>>(
 /// `Ok(count)` where count = number of QP sets that were renamed (0 = no gaps found)
 ///
 /// # Example
-/// Before: 1, 2, 5  →  After: 1, 2, 3
+/// Before: 1, 2, 5 →  After: 1, 2, 3
 pub fn reassign_qp_files<P: AsRef<Path>>(
     folder: P,
     eid: &str,
@@ -195,7 +195,7 @@ pub fn reassign_qp_files<P: AsRef<Path>>(
 
 // =============================================================================
 // TESTS for reassign_qp_files
-// Run with:  cargo test reassign_tests
+// Run with: cargo test reassign_tests
 // =============================================================================
 #[cfg(test)]
 mod reassign_tests {
@@ -236,7 +236,7 @@ mod reassign_tests {
 
     #[test]
     fn test_gap_at_end_fixed() {
-        // QPs 1, 2, 5  →  must become 1, 2, 3
+        // QPs 1, 2, 5 →  must become 1, 2, 3
         let dir = tempdir().unwrap();
         let eid = "E0001";
         create_qp_files(dir.path(), eid, 1);
@@ -254,7 +254,7 @@ mod reassign_tests {
 
     #[test]
     fn test_gap_in_middle_fixed() {
-        // QPs 1, 4, 7  →  must become 1, 2, 3
+        // QPs 1, 4, 7 →  must become 1, 2, 3
         let dir = tempdir().unwrap();
         let eid = "E0042";
         create_qp_files(dir.path(), eid, 1);

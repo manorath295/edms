@@ -1,16 +1,16 @@
-//! Index Table generation for RepoView, per Ravi's Index Table wiki
+//! Index Table generation for RepoView, per Index Table wiki
 //! (2026-09-05). Two approaches, one active at a time — both write the same
 //! `Tables-NNN.md` + `Tables-meta.md` names, so generating with one
 //! naturally replaces whatever the other produced; `Tables-meta.md` names
 //! the approach on its first line so the folder is self-describing.
 //!
 //! - [B] Endpoint Segments — generic, no tags needed. One row per endpoint:
-//!   its URL path (scheme/host stripped), EID, method; sorted by path.
+//! its URL path (scheme/host stripped), EID, method; sorted by path.
 //! - [A] Sorted Tags — a tag -> segment-count pivot: one line per tag,
-//!   listing every distinct segment under it with how many endpoints have
-//!   that (tag, segment) pair. An endpoint with several tags counts once
-//!   under each. Untagged endpoints land in a synthetic `(untagged)` line,
-//!   always last.
+//! listing every distinct segment under it with how many endpoints have
+//! that (tag, segment) pair. An endpoint with several tags counts once
+//! under each. Untagged endpoints land in a synthetic `(untagged)` line,
+//! always last.
 //!
 //! Deliberate simplification vs. the wiki's literal sketch: the wiki hints
 //! at splitting a single tag's count across two files to fill a batch to

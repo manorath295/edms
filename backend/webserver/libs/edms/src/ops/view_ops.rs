@@ -4,8 +4,7 @@ use crate::query_loader::QueryMap;
 use std::sync::Arc;
 
 /// Which of the three per-view-type schemas an operation targets. Each maps
-/// to its own tables (`collections`/`collections_tags`, etc.) per Ravi's
-/// schema (2026-08-25) — kept as separate tables, not one shared table with
+/// to its own tables (`collections`/`collections_tags`, etc.) per /// schema (2026-08-25) — kept as separate tables, not one shared table with
 /// a view column, matching his explicit design.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ViewKind {

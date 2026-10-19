@@ -36,7 +36,7 @@ pub async fn export_collection(
     };
 
     // 2. Spawn edms-child to package the zip export
-    //    Result arrives via /internal/callback — fire and forget
+    // Result arrives via /internal/callback — fire and forget
     ipc::spawn_child(
         "export_collection",
         json!({
@@ -47,7 +47,7 @@ pub async fn export_collection(
     );
 
     // 3. Spawn edms-child to generate markdown
-    //    Uses the endpoint data we already fetched from DB
+    // Uses the endpoint data we already fetched from DB
     ipc::spawn_child(
         "generate_markdown",
         json!({
@@ -68,7 +68,7 @@ pub async fn export_collection(
     );
 
     // 4. Return local markdown immediately as the HTTP response
-    //    (same as the original fallback — client gets something right away)
+    // (same as the original fallback — client gets something right away)
     let mut md = String::new();
     md.push_str(&format!("# Export: {collection}\n\n"));
     md.push_str(&format!("Generated as `{filename}`\n\n"));
@@ -101,7 +101,7 @@ pub async fn export_collection(
 /// Honest limitation: this only extracts files to disk. It does not parse
 /// the extracted request/response/headers JSON back into the DB (endpoints,
 /// bookmarks, etc.) — that's a separate piece of logic nobody has specified
-/// yet (see Ravi's 2026-09-07 email: IE "depends only on Collections" but
+/// yet (see 2026-09-07 email: IE "depends only on Collections" but
 /// the UI/backend split for it isn't finalized).
 pub async fn import_collection(
     State(_state): State<AppState>,

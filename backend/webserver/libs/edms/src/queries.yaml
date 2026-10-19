@@ -212,7 +212,7 @@ bookmarks:
     query: "DELETE FROM bookmarks WHERE endpoint_id = ?"
 
 # Catalog tables: which collections/webviews/repoviews exist and where their
-# independent SQLite file lives (per Ravi, 2026-08-25).
+# independent SQLite file lives .
 catalog:
   COLLECTIONS_CREATE:
     help: "Register a new collection in the catalog"
@@ -364,7 +364,7 @@ merge:
 
 # Per-collection endpoint membership — run against ONE collection's own
 # SQLite file (storage/collections/{name}.sqlite), not the shared edms.db.
-# Per Ravi (2026-09-03): each collection file holds just endpoint_id +
+# 
 # when it was added — no folder column needed, the file itself is the
 # scope. Not to be confused with collection_tag_memberships (merge/? above),
 # which tracks TAG presence per collection in the shared db, not endpoints.

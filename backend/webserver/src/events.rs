@@ -13,7 +13,7 @@ pub enum ServerEvent {
     /// client with a specific collection open can filter to just that one
     /// and ignore updates for collections it isn't currently showing —
     /// needed once more than one collection can be loaded at once across
-    /// different tabs (2026-09-22).
+    /// different tabs.
     BookmarksUpdated { collection: String, count: usize },
     FolderBecameActive { folder: String },
     TestStarted { endpoint_id: String, request_number: i32 },
@@ -49,7 +49,7 @@ pub enum ServerEvent {
 
     /// A collection's real membership changed (save/unsave) — as opposed
     /// to `BookmarksUpdated`, which is about the draft/bookmark state.
-    /// Previously nothing was emitted here at all (2026-09-22): a save or
+    /// Previously nothing was emitted here at all: a save or
     /// unsave silently succeeded with no way for any other tab to know.
     /// WS-triggers-a-refresh, REST-delivers-the-data, same as
     /// ViewTagsUpdated above — re-fetch GET /collections/:name/endpoints.
@@ -63,8 +63,15 @@ pub enum ServerEvent {
     QpUpdated { endpoint_id: String, request_number: i32 },
 
     /// A brand-new QP was created via POST /test-view/:endpoint_id/qps/create
-    /// without running a real HTTP test (per Shivanshu, 2026-09-29).
+    /// without running a real HTTP test.
     QpCreated { endpoint_id: String, request_number: i32 },
+
+    /// A QP run or create was blocked because an identical (Q, P, H) already exists.
+    DuplicateQpBlocked {
+        endpoint_id: String,
+        request_number: i32,
+        duplicate_of: i32,
+    },
 
     EndpointAnnotationUpdated { endpoint_id: String },
 

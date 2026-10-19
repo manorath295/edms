@@ -1,9 +1,9 @@
 //! Catalog registration for collections/webview/repoview — which instances
-//! exist, per Ravi's schema (2026-08-25). `file_path` (the independent
+//! exist, per schema (2026-08-25). `file_path` (the independent
 //! SQLite file each one gets) isn't created for webview/repoview by this
 //! pass yet — those catalog rows still get `file_path: null`.
 //!
-//! Collections are further along (per Ravi, 2026-09-03): each one gets its
+//! Collections are further along : each one gets its
 //! own real SQLite file under `storage/collections/{name}.sqlite`, holding
 //! just endpoint_id + when it was added — never a copy of the endpoint's
 //! actual data, which always stays in the central `endpoints` table.
@@ -529,7 +529,7 @@ pub async fn list_collections(State(state): State<AppState>) -> (StatusCode, Jso
 
 // ── RepoView / WebView ───────────────────────────────────────────────────────────
 //
-// v1.0 (Ravi, 2026-10-05/06): a RepoView is a LIST - a SQLite index (members
+// v1.0 : a RepoView is a LIST - a SQLite index (members
 // plus a snapshot of their endpoint rows, tags and QP metadata) and the
 // Tables-*.md files. It holds no EQP data; that is copied out of
 // globalEQPData only at Import/Export (takeout) time, which keeps Create
@@ -881,7 +881,7 @@ pub async fn delete_repoviews_bulk(
 
 /// POST /repoview/:name/duplicate — clones the whole RepoView folder
 /// (membership file, copied EQP data, and any generated Tables-*.md) as-is
-/// under a new name, per the proposal sent to Ravi: the underlying data
+/// under a new name, per the proposal sent the underlying data
 /// doesn't change on duplicate, so the batched tables are still correct
 /// the instant they're copied — no need to regenerate them. Checked: the
 /// generated Tables-meta.md doesn't embed the RepoView's own name/

@@ -20,7 +20,7 @@ links:
 
 storage:
   # Single point of configuration for the top-level EDMS data directory
-  # (Ravi, 2026-09-14). A RELATIVE path, resolved against the app's
+  # . A RELATIVE path, resolved against the app's
   # working directory. You must create this directory yourself before
   # starting the app — it will not be created for you. It must not be
   # inside this repo or the init/ folder.

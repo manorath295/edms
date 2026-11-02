@@ -1,5 +1,5 @@
 //! Per-view tag counts (create/delete/rename) — collections, webview,
-//! repoview. Backed by Ravi's schema (2026-08-25): a separate tagname+count
+//! repoview. Backed by schema (2026-08-25): a separate tagname+count
 //! table per view type, not a shared table+column, and not a full tag
 //! entity with membership tracking — just an incrementally maintained
 //! counter. `bookmarks`/`eqptags` is untouched — not part of this schema.

@@ -35,6 +35,7 @@ use handlers::{
         refresh_crud_operations,
     },
     dataview::{dashboard, delete_folder, ws_make_folder_active},
+    dev_api::{api_collections, api_history, ws_api},
     endpoints::{create_endpoint, delete_endpoint, lookup_endpoint, update_endpoint_annotation},
     logs::get_logs,
     report_export::export_eqp_report,
@@ -44,7 +45,7 @@ use handlers::{
         clear_bookmarks, clear_history, create_qp, delete_qp, get_saved_headers, get_saved_request,
         get_saved_response, list_qps, save_bookmark, save_history, stop, update_qp,
         ws_add_from_history_to_bookmark, ws_delete_from_bookmark, ws_load_bookmarks,
-        ws_load_endpoints, ws_load_history, ws_run,
+        history_cards, ws_load_endpoints, ws_load_history, ws_run,
     },
     view::{home, list_view, test_view, trigger_view_refresh},
     view_catalog::{
@@ -316,6 +317,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/test-view/endpoints/load", get(ws_load_endpoints))
         .route("/test-view/:collection/bookmarks/load", get(ws_load_bookmarks))
         .route("/test-view/history/load", get(ws_load_history))
+        .route("/test-view/history/cards", get(history_cards))
         .route("/test-view/run", get(ws_run))
         .route("/test-view/stop", post(stop))
         .route("/test-view/save/history", post(save_history))
@@ -389,6 +391,13 @@ async fn main() -> anyhow::Result<()> {
         .route("/import-export/check", post(import_export_check))
         .route("/jobs", get(list_jobs))
         .route("/jobs/ws", get(ws_jobs))
+        // Dev API: push one QP for one endpoint without the UI. The paths
+        // are served with and without the trailing slash.
+        .route("/hashedtokens/edms/api/history", post(api_history))
+        .route("/hashedtokens/edms/api/history/", post(api_history))
+        .route("/hashedtokens/edms/api/collections", post(api_collections))
+        .route("/hashedtokens/edms/api/collections/", post(api_collections))
+        .route("/hashedtokens/edms/api/ws", get(ws_api))
         .route("/jobs/:id", get(get_job))
         .route("/internal/callback", post(ipc_callback))
         .route("/logs", get(get_logs))
